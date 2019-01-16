@@ -1,12 +1,10 @@
 <?php
 require_once("../controller/homeController.php");
-include("../config/dbConnect.php");
 
 
-
-$home = new homeController(connectToDb());
+$home = new homeController();
 $home_controller = $home-> getDetails();
-echo result;
+echo $home_controller;
 
 // if(isset( $_POST['invoiceno'] )) {
 //      $myAnimal = new animal();
