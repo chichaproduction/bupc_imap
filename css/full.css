@@ -31,4 +31,20 @@
   
   .thin::-webkit-scrollbar {
   width: 6px; }
+
+.textWhite{
+  color: antiquewhite;
+}
+
+.bg-green-ashDull{
+    background-color:rgb(157, 230, 157);
+}
+
+.fade{
+  height:100% !important;
+  width:100% !important;
+}
+  /* .modal-content {
+   overflow:hidden;
+} */
   

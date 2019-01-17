@@ -32,24 +32,11 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
     $scope.modal_func = function(data) {
         var modalparam = data;
         var modal_param = JSON.stringify(modalparam);
-        // var something = {
-        //     name: 'Jobert',
-            
-        //     age: '14',
-            
-        //     adress: 'Kangkong'
-            
-        //     };
         
-       
+           $http.post('handler/homeHandler.php', modal_param).then(function(data){
+               $scope.modal_info = data.data[0];
+                console.log( $scope.modal_info);
 
-
-           $http.post('handler/homeHandler.php', modal_param).then(function(response){
-                console.log(response.data.Address);
-
-                // $scope.response = data;
-
-                // console.log($scope.response.data);
               });
 
 
