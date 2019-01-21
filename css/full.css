@@ -47,4 +47,26 @@
   /* .modal-content {
    overflow:hidden;
 } */
-  
+
+
+
+/* MAP SETUP */
+
+
+html,body,#map { 
+  height: 100%; 
+}
+
+/* Nav Settings */
+body{
+  padding-top: 50px;
+}
+
+/* MARGIN SETUPS */
+.full{
+  max-width: 100%;
+  padding:0;
+}
+.marginless{
+margin:0;
+}
