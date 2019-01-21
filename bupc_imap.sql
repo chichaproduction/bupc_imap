@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2019 at 03:50 PM
+-- Generation Time: Jan 21, 2019 at 03:47 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 5.6.33
 
@@ -32,6 +32,7 @@ CREATE TABLE `buildings` (
   `id` int(255) NOT NULL,
   `building_code` varchar(4) NOT NULL,
   `building_name` varchar(555) NOT NULL,
+  `building_desc` varchar(5555) DEFAULT NULL,
   `image_link` varchar(555) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `created_by` datetime NOT NULL,
@@ -43,23 +44,25 @@ CREATE TABLE `buildings` (
 -- Dumping data for table `buildings`
 --
 
-INSERT INTO `buildings` (`id`, `building_code`, `building_name`, `image_link`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
-(1, 'CESD', 'COMPUTER AND ENGINEERING STUDIES DEPARTMENT', 'img/real_img/CESD Building.jpg', '2019-01-10 00:00:00', '2019-01-10 00:00:00', '2019-01-10 00:00:00', 'Administrator'),
-(2, 'SB', 'SALCEDA BUILDING', 'img/real_img/Salceda Building.jpg', '2019-01-10 00:00:00', '2019-01-10 00:00:00', '2019-01-10 00:00:00', 'Administrator'),
-(3, 'AB', 'ADMIN BUILDING', 'img/real_img/Admin Building.jpg', '2019-01-10 00:00:00', '2019-01-10 00:00:00', '2019-01-10 00:00:00', 'Administrator'),
-(4, 'TB', 'TECHNOLOGY BUILDING', 'img/real_img/Technology Building.jpg', '2019-01-10 00:00:00', '2019-01-10 00:00:00', '2019-01-10 00:00:00', 'Administrator'),
-(5, 'MWSB', 'MACHINE AND WELDING SHOP BUILDING', 'img/real_img/Machine and Welding Shop Building.jpg', '2019-01-13 00:00:00', '2019-01-13 00:00:00', '2019-01-13 00:00:00', 'Administrator'),
-(6, 'CB', 'CACAPIT BUILDING', 'img/real_img/Cacapit Building 1.jpg', '2019-01-13 00:00:00', '2019-01-13 00:00:00', '2019-01-13 00:00:00', 'Administrator'),
-(7, 'AREC', 'AFFILIATED RENEWABLE ENERGY CENTER FOR REGION V', 'img/real_img/AREC Building.jpg', '2019-01-13 00:00:00', '2019-01-13 00:00:00', '2019-01-13 00:00:00', ''),
-(8, 'ND', 'NURSING DEPARTMENT', 'img/real_img/Nursing Building.jpg', '2019-01-13 00:00:00', '2019-01-13 00:00:00', '2019-01-13 00:00:00', ''),
-(9, 'FTB', 'FOOD TECHNOLOGY BUILDING', 'img/real_img/Food Technology Building.jpg', '2019-01-13 00:00:00', '0000-00-00 00:00:00', '2019-01-13 00:00:00', ''),
-(10, 'REPC', 'RESEARCH, EXTENSION, AND PRODUCTION CENTER', 'img/real_img/Research Extension and Production Center Building.jpg', '2019-01-13 00:00:00', '0000-00-00 00:00:00', '2019-01-13 00:00:00', ''),
-(11, 'ATB', 'AUTOMOTIVE BUILDING', 'img/real_img/Automotive Building.jpg\r\n', '2019-01-13 00:00:00', '0000-00-00 00:00:00', '2019-01-13 00:00:00', ''),
-(12, 'CSS', 'COUNCIL STUDENT SERVICE', 'img/real_img/Council Student Service Building.jpg', '2019-01-13 00:00:00', '0000-00-00 00:00:00', '2019-01-13 00:00:00', ''),
-(13, 'BG', 'BUPC Gymnasium', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', ''),
-(14, 'AVR', 'AUDIO VISUAL ROOM BUILDING', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', ''),
-(15, 'D', 'DORMSTEL AND BUSINESS CENTER', 'img/real_img/Dorm.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', ''),
-(16, 'C', 'CANTEEN', '	\r\nimg/real_img/Canteen.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '');
+INSERT INTO `buildings` (`id`, `building_code`, `building_name`, `building_desc`, `image_link`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
+(1, 'CESD', 'COMPUTER AND ENGINEERING STUDIES DEPARTMENT', NULL, 'img/real_img/CESD Building.jpg', '2019-01-10 00:00:00', '2019-01-10 00:00:00', '2019-01-10 00:00:00', 'Administrator'),
+(2, 'SB', 'SALCEDA BUILDING', NULL, 'img/real_img/Salceda Building.jpg', '2019-01-10 00:00:00', '2019-01-10 00:00:00', '2019-01-10 00:00:00', 'Administrator'),
+(3, 'AB', 'ADMIN BUILDING', NULL, 'img/real_img/Admin Building.jpg', '2019-01-10 00:00:00', '2019-01-10 00:00:00', '2019-01-10 00:00:00', 'Administrator'),
+(4, 'TB', 'TECHNOLOGY BUILDING', NULL, 'img/real_img/Technology Building.jpg', '2019-01-10 00:00:00', '2019-01-10 00:00:00', '2019-01-10 00:00:00', 'Administrator'),
+(5, 'MWSB', 'MACHINE AND WELDING SHOP BUILDING', NULL, 'img/real_img/Machine and Welding Shop Building.jpg', '2019-01-13 00:00:00', '2019-01-13 00:00:00', '2019-01-13 00:00:00', 'Administrator'),
+(6, 'CB', 'CACAPIT BUILDING', NULL, 'img/real_img/Cacapit Building 1.jpg', '2019-01-13 00:00:00', '2019-01-13 00:00:00', '2019-01-13 00:00:00', 'Administrator'),
+(7, 'AREC', 'AFFILIATED RENEWABLE ENERGY CENTER FOR REGION V', NULL, 'img/real_img/AREC Building.jpg', '2019-01-13 00:00:00', '2019-01-13 00:00:00', '2019-01-13 00:00:00', ''),
+(8, 'ND', 'NURSING DEPARTMENT', NULL, 'img/real_img/Nursing Building.jpg', '2019-01-13 00:00:00', '2019-01-13 00:00:00', '2019-01-13 00:00:00', ''),
+(9, 'FTB', 'FOOD TECHNOLOGY BUILDING', NULL, 'img/real_img/Food Technology Building.jpg', '2019-01-13 00:00:00', '0000-00-00 00:00:00', '2019-01-13 00:00:00', ''),
+(10, 'REPC', 'RESEARCH, EXTENSION, AND PRODUCTION CENTER', NULL, 'img/real_img/Research Extension and Production Center Building.jpg', '2019-01-13 00:00:00', '0000-00-00 00:00:00', '2019-01-13 00:00:00', ''),
+(11, 'ATB', 'AUTOMOTIVE BUILDING', NULL, 'img/real_img/Automotive Building.jpg\r\n', '2019-01-13 00:00:00', '0000-00-00 00:00:00', '2019-01-13 00:00:00', ''),
+(12, 'CSS', 'COUNCIL STUDENT SERVICE', NULL, 'img/real_img/Council Student Service Building.jpg', '2019-01-13 00:00:00', '0000-00-00 00:00:00', '2019-01-13 00:00:00', ''),
+(13, 'BG', 'BUPC Gymnasium', NULL, 'img/real_img/Gym.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', ''),
+(14, 'AVR', 'AUDIO VISUAL ROOM BUILDING', NULL, 'img/real_img/AVR Building.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', ''),
+(15, 'D', 'DORMSTEL AND BUSINESS CENTER', NULL, 'img/real_img/Dorm.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', ''),
+(16, 'C', 'CANTEEN', NULL, '	\r\nimg/real_img/Canteen.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', ''),
+(17, 'M', 'MOTORPOOL', NULL, 'img/real_img/Motorpool Arec.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', ''),
+(18, 'SF', 'SOCCER FIELD', NULL, 'img/real_img/Field 2.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -216,7 +219,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT for table `buildings`
 --
 ALTER TABLE `buildings`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `rooms`
