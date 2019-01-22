@@ -42,10 +42,24 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 // TEST AREA
 //Handle click on polygon
-var onPolyClick = function(event){
-  //callFancyboxIframe('flrs.html')
-  var label = event.target.options.label;
-  var content = event.target.options.popup;
-  var otherStuff = event.target.options.otherStuff;
-  alert("Clicked on polygon with label:" +label +" and content:" +content +". Also otherStuff set to:" +otherStuff);
-};
+var circle = L.circle([60.8650, 50], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 1000
+}).addTo(map);
+
+var cb = L.polygon([
+  [64.509, 16],
+  [69.600, 33],
+  [69.100, 38],
+  [67.600, 38],
+  [62.509, 21],
+  [63.509, 16],
+]).addTo(map);
+
+function onMapClick(e) {
+  alert("You clicked the map at " + e.latlng);
+}
+
+map.on('click', onMapClick);
