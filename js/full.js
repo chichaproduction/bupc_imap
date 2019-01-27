@@ -42,15 +42,18 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 // TEST AREA
 //Handle click on polygon
-var circle = L.circle([60.8650, 50], {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 0.5,
-    radius: 1000
-}).addTo(map);
+// var circle = L.circle([60.8650, 50], {
+//     color: 'red',
+//     fillColor: '#f03',
+//     fillOpacity: 0.5,
+//     radius: 1000
+// }).addTo(map);
 
+//Buildings
+
+//Cacapit Building
 var cb = L.polygon([
-  [64.509, 16],
+  [64.962808, 15.738929],
   [69.600, 33],
   [69.100, 38],
   [67.600, 38],
@@ -58,8 +61,31 @@ var cb = L.polygon([
   [63.509, 16],
 ]).addTo(map);
 
+//Salceda Building
+var cb = L.polygon([
+  [58.70182, 87.427735],
+  [61.881099, 87.427735],
+  [62.128824, 86.460938],
+  [62.486461, 86.352981],
+  [63.719876, 88.724483],
+  [70.432011, 108.529161],
+  [70.750267, 111.325252],
+  [69.678573, 115.453423],
+  [69.255725, 115.498104],
+  [69.130738, 115.058937],
+  [67.00405, 114.903774],
+  [66.377555, 120.085945],
+  [68.59358, 126.002038],
+  [68.914318, 129.541346],
+  [67.711887, 133.845183],
+
+
+
+
+]).addTo(map);
+
 function onMapClick(e) {
-  alert("You clicked the map at " + e.latlng);
+  alert(e.latlng);
 }
 
 map.on('click', onMapClick);

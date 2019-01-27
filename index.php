@@ -8,6 +8,10 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/leaflet.css" rel="stylesheet">
+
+        <!-- main -->
+        <link href="css/alertify.min.css" rel="stylesheet">
+
             <!-- main -->
         <link href="css/full.css" rel="stylesheet">
        
@@ -99,7 +103,7 @@
     
 
     <!-- Modal -->
-    <!-- <div class="container">
+    <div class="container">
     <div class="modal fade" id="info_modal" tabindex="-1" role="dialog" aria-labelledby="info_modal_title" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content ">
@@ -115,9 +119,9 @@
           </div>
 
           <div class="col">
-              <div id="accordion"> -->
+              <div id="accordion">
             <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx CARD 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
-                <!-- <div class="card ">
+                <div class="card ">
                   <div class="card-header bg-success textWhite" id="headingOne">
                     <h5 class="mb-0">
                       <span class="btn textWhite" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -131,10 +135,10 @@
                       {{modal_info.building_desc}}
                     </div>
                   </div>
-                </div> -->
+                </div>
 
                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx CARD 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
-                <!-- <div class="card ">
+                <div class="card ">
                   <div class="card-header bg-success textWhite" id="headingTwo">
                     <h5 class="mb-0">
                       <span class="btn textWhite collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -147,11 +151,11 @@
                       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                     </div>
                   </div>
-                </div> -->
+                </div>
 
               <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx CARD 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 
-                  <!-- <div class="card ">
+                  <div class="card ">
                     <div class="card-header bg-success textWhite" id="headingThree">
                       <h5 class="mb-0">
                           <span class="btn textWhite collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -174,7 +178,7 @@
           </div>
         </div>
       </div>
-  </div> -->
+  </div>
         <!-- <div>Hi {{name}}, welcome to AngularJS Tutorial Series</div>
         
         <div ng-controller="AboutController">Brought to you by {{name}}.</div>
@@ -218,7 +222,10 @@
 <script src="js/leaflet.js"></script>
 
 <!-- main -->
-<script src="js/full.js"></script>
+<!-- <script src="js/full.js"></script> -->
+
+<!-- alertify -->
+<script src="js/alertify.min.js"></script>
 
 <!-- AngularJS Application Specific Scripts -->
 <script src="app/app.js"></script>

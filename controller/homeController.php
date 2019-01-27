@@ -22,13 +22,13 @@ class homeController{
 
 
         foreach($building_stmt_result as $key => $value){
-            if($buildingCode === $value[building_code]){
+            if($buildingCode === $value['building_code']){
             
                 array_push($buildingInfo, $value);
             }
         }
 
-        $building_id = $buildingInfo[0][id];
+        $building_id = $buildingInfo[0]['id'];
 
         /// xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  GET ROOM INFORMATION  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         $rooms_stmt = $dbCon->prepare("SELECT * FROM rooms WHERE building_id = :b_id");
