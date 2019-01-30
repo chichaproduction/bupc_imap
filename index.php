@@ -7,7 +7,7 @@
             <!-- BOOTSTRAP -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/leaflet.css" rel="stylesheet">
+        <link href="node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
 
         <!-- main -->
         <link href="css/alertify.min.css" rel="stylesheet">
@@ -148,7 +148,76 @@
                   </div>
                   <div id="collapseTwo" class=" collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+
+                    <div class="row">
+                        <!-- ROOOMS -->
+                        <div class="table-responsive table-hover col-lg-6">
+                          <table class="table light_green">
+                            <thead>
+                              <tr class="table-success">
+                                  <td>Rooms</td>
+                              </tr>
+                            </thead>
+                            <tbody >
+                              <tr  ng-repeat="(key, value) in classroom track by $index">
+                                <td ng-click="room_name_clicked(value.room_name)">{{value.room_name}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        
+                        <!-- OFFICES -->
+                        <div class="table-responsive table-hover col-lg-6">
+                          <table class="table light_green">
+                            <thead>
+                              <tr class="table-danger">
+                                  <td>Office</td>
+                              </tr>
+                            </thead>
+                            <tbody >
+                              <tr  ng-repeat="(key, value) in office track by $index">
+                                <td ng-click="room_name_clicked(value.room_name)">{{value.room_name}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+
+                  </div>
+                  <div class="row">
+
+                          <!-- FACILITY -->
+                        <div class="table-responsive table-hover col-lg-6">
+                          <table class="table light_green">
+                            <thead>
+                              <tr class="table-warning">
+                                  <td>Facility</td>
+                              </tr>
+                            </thead>
+                            <tbody >
+                              <tr  ng-repeat="(key, value) in facility track by $index">
+                                <td ng-click="room_name_clicked(value.room_name)">{{value.room_name}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <div class="table-responsive table-hover col-lg-6">
+                          <table class="table light_green">
+                            <thead>
+                              <tr class="table-info">
+                                  <td>Comfort Room</td>
+                              </tr>
+                            </thead>
+                            <tbody >
+                              <tr  ng-repeat="(key, value) in comfortroom track by $index">
+                                <td ng-click="room_name_clicked(value.room_name)">{{value.room_name}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+
+                        </div>
+
                     </div>
                   </div>
                 </div>
@@ -219,7 +288,7 @@
 <script src="js/angular-route.min.js"></script>
 
 <!-- LEAFLET -->
-<script src="js/leaflet.js"></script>
+<script src="node_modules/leaflet/dist/leaflet.js"></script>
 
 <!-- main -->
 <!-- <script src="js/full.js"></script> -->

@@ -52,6 +52,14 @@
 
 /* MAP SETUP */
 
+.smalltext{
+  font-size: 5px !important;
+}
+
+.light_green{
+  background-color: #edffc2 !important;
+}
+
 
 html,body,#map { 
   height: 100%; 

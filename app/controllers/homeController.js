@@ -256,38 +256,76 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
             mwsb.on('click',     function(e){ $scope.building_code = $scope.building_info_mwsb['building_code']; $scope.ClickHandler() });
             m.on('click',        function(e){ $scope.building_code = $scope.building_info_m['building_code']; $scope.ClickHandler() });
 
-            
 
+     
+  ///////////////////////////////////////////////////////////////////////////////MARKER MULTIPLE  
+        
+            //     for (var i = 0; i < planes.length; i++) {
+            //         marker = new L.marker([planes[i][1],planes[i][2]])
+            //             //.bindPopup(planes[i][0])
+            //             .addTo(map);
+            //     }
 
+            //     var markerArray = [
+            //     L.marker([51.48902723702328, 117.70312607288362]),
+            //     L.marker([58.48902723702328, 117.70312607288362]),
+            //     L.marker([56.48902723702328, 117.70312607288362]),
+            //     L.marker([52.48902723702328, 117.70312607288362])
+            // ];
+            //     //markerArray.push(L.marker([51.505, -0.09]));
+               
+            //     var group = L.featureGroup(markerArray).addTo(map);
+            //     map.fitBounds(group.getBounds());
 
+    ////////////////////////////////////////////////////////////////////////////////////// MARKER SINGLE
+            // var marker = L.marker([66.15385236732068, 100.54687500000001],
+            //     {title: 'Hover Text'}
+            //     )
+            //    .addTo(map);
 
-
-            
+    
+    ////////////////////////////////////////////////////////////////////////////////////// GET LAT LNG OF MAP
             // function onMapClick(e) {
-            //     //alert(e.latlng);
+            //     // alert(e.latlng);
             //     var rrr = e.latlng
                 
-            //   $scope.savers = "[" + rrr.lat + ", " + rrr.lng + "],";
-            //   $scope.mapmapparam();
+            //   $scope.savers = "[" + rrr.lat + ", " + rrr.lng + "]";
+            //   alertify.alert($scope.savers);
+            // //   $scope.mapmapparam();
             // }
 
-           
+           var marker;
+            
+    $scope.room_name_clicked = function(data){
+        console.log(data);
 
-           
+        angular.forEach($scope.modal_info.rooms, function(value, key){
             
-            map.on('click', onMapClick);
-            
-   });
+            if(value.room_name === data){
+               
+                $('#info_modal').modal('toggle')
+               
+               var temp = value.coordinates;
+
+                var result = temp.slice(1,-1);
+
+                var coordinates = result.split(",");
+             
+
+                 marker = L.marker(coordinates,
+                                {title: data}
+                                )
+               .addTo(map);
+
+                  
+            }
+
+        });  
+
+        
+       
     }
-
-
-
-
-    // $scope.mapmapparam = function() {
-    //    console.log($scope.savers);
-     
-    // }
-
+           
     $scope.ClickHandler = function(data){
         var data = $scope.building_code;
 
@@ -310,12 +348,60 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                 $scope.modal_info = data.data[0];
                 console.log( $scope.modal_info);
 
-                });
+                $scope.classroom     = [];
+                $scope.office        = [];
+                $scope.facility      = [];
+                $scope.comfortroom   = [];
+               
 
-                $('#info_modal').modal('toggle')
+                angular.forEach($scope.modal_info.rooms, function(value, key){
+                   
 
+                    if(value.room_type === '0'){
+                        $scope.classroom.push($scope.modal_info.rooms[key]);
+                        console.log(value.room_type + " CLASSROOM");
+                    }else if (value.room_type === '1'){
+                        $scope.office.push($scope.modal_info.rooms[key]);
+                        console.log(value.room_type + " OFFICE");
+                    }else if (value.room_type === '3'){
+                        $scope.office.push($scope.modal_info.rooms[key]);
+                        console.log(value.room_type + " OFFICE");
+                    }else if (value.room_type === '2'){
+                        $scope.comfortroom.push($scope.modal_info.rooms[key]);
+                        console.log(value.room_type + " CR");
+                    }else if (value.room_type === '4'){
+                        $scope.facility.push($scope.modal_info.rooms[key]);
+                        console.log(value.room_type + " FACILITY");
+                    }
+                });  
+                // $scope.PMCTQ_unit = unittemp;
+
+
+        });
+
+        $('#info_modal').modal('toggle')
+        
 
     }
+
+
+
+
+           // map.on('click', onMapClick);
+            
+   });
+    }
+
+
+
+
+    // $scope.mapmapparam = function() {
+    //    console.log($scope.savers);
+     
+    // }
+
+   
+
 
     load_init();
 
