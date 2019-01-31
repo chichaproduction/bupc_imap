@@ -8,7 +8,8 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
-
+        <link href="css/datepicker.css"  rel="stylesheet">
+        <link href="css/select.css"  rel="stylesheet">
         <!-- main -->
         <link href="css/alertify.min.css" rel="stylesheet">
 
@@ -35,7 +36,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Events</a>
+                <a class="nav-link" href="#"  data-toggle="modal" data-target=".eventsModal" >Events</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">About</a>
@@ -51,6 +52,84 @@
       <div class="container navtopfix full" style="height:100%; padding:0;">
       <div id="map"></div>
       </div>
+
+      <!-- Large modal -->
+        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".eventsModal">Large modal</button> -->
+
+        <div class="modal fade eventsModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+            <div class="modal-header bg-success textWhite">
+            <h5 class="modal-title" id="info_modal_title">EVENTS</h5>
+           
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+            <marquee  behavior="scroll" scrollamount="2" bgcolor="yellow" loop="-1" width="100%"><i>
+              <strong><font color="blue">Date:</font> <span>{{datecurr}}</span></strong>
+              <strong><font color="blue">Time:</font> <span>{{datetime}}</span></strong>
+            
+            </i></marquee> 
+
+            <!--       EVENT WOKRPLACE       -->
+
+            <!-- ADD Event -->
+            <div class="card ">
+                
+
+                  
+                    <div class="card-body light_green">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <label for="event_name">Event Name:</label>
+                        <input id="event_name" ng-model="eventName" type="text" style="width:80%;">
+                        </div>  
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-6">
+                          Event Start Date:<input id="date_from" ng-model="dateFrom" type='text' class="datepicker-here" data-position="right top"  data-language='en'/>
+                        </div>
+                        <div class="col-lg-6">
+                          Event Finish Date<input id="date_to" ng-model="dateTo" type='text' class="datepicker-here" data-position="right top"  data-language='en'/>
+                        </div>
+                      </div>
+                       
+
+                      </div>
+                    </div>
+             
+
+
+
+
+
+
+            
+          </div>
+           
+
+
+
+
+
+
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">View Event</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Add Event</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Edit Event</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Remove Event</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+
+            </div>
+          </div>
+        </div>
+
       
 
 <!-- 
@@ -125,7 +204,7 @@
                   <div class="card-header bg-success textWhite" id="headingOne">
                     <h5 class="mb-0">
                       <span class="btn textWhite" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Building Description
+                        Description
                       </span>
                     </h5>
                   </div>
@@ -142,7 +221,7 @@
                   <div class="card-header bg-success textWhite" id="headingTwo">
                     <h5 class="mb-0">
                       <span class="btn textWhite collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                          Building Facilities
+                          Facilities
                       </span>
                     </h5>
                   </div>
@@ -224,7 +303,7 @@
 
               <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx CARD 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 
-                  <div class="card ">
+                  <!-- <div class="card ">
                     <div class="card-header bg-success textWhite" id="headingThree">
                       <h5 class="mb-0">
                           <span class="btn textWhite collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -239,7 +318,7 @@
                     </div>
                   </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -290,6 +369,14 @@
 <!-- LEAFLET -->
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
 
+<!-- DatePicker -->
+<script src="js/datepicker.js"></script>
+<script src="js/i18n/datepicker.en.js"></script>
+<!-- UI SELECT -->
+<script src="js/select.js"></script>
+<!-- <script src="bower_components/air-datepicker/dist/js/datepicker.min.js"></script>
+<script src="bower_components/air-datepicker/dist/js/datepicker.en.js"></script>
+<script src="bower_components/air-datepicker/dist/js/air-datepicker.js"></script> -->
 <!-- main -->
 <!-- <script src="js/full.js"></script> -->
 

@@ -60,6 +60,13 @@
   background-color: #edffc2 !important;
 }
 
+.medheight{
+  height:80px !important;
+}
+
+.datepicker{
+  z-index: 1200;
+}
 
 html,body,#map { 
   height: 100%; 
@@ -78,3 +85,6 @@ body{
 .marginless{
 margin:0;
 }
+
+
+/* MODAL SETTINGS */

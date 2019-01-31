@@ -1,0 +1,25 @@
+{
+  "name": "bupc_imap",
+  "authors": [
+    "no"
+  ],
+  "description": "none",
+  "main": "",
+  "license": "MIT",
+  "homepage": "index.php",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "air-datepicker": "^2.2.3",
+    "alertify-js": "^1.11.2",
+    "angular-route": "^1.7.5",
+    "angular": "^1.7.5",
+    "boostrap": "^4.2.1",
+    "jquery": "^3.3.1"
+  }
+}

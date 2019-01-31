@@ -2,7 +2,7 @@ var bupc_imapControllers = angular.module("bupc_imap.Controllers", []);
 bupc_imapControllers.controller('bupc_imap_Controller', hello);
 
 // function hello($scope,piValue,ourPlanet,user,APP_NAME,APP_VERSION,API_URL, helloFactory, VAT, helloService)
-function hello($scope,$http,APP_NAME,APP_VERSION,API_URL)
+function hello($scope,$http,$timeout,APP_NAME,APP_VERSION,API_URL)
 {
 $scope.title = APP_NAME + " Version " + APP_VERSION;
 
@@ -28,11 +28,18 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
     // $scope.function
 
 
+ 
 
     load_init = function(){
 
+        
+        
+
         $http.post('handler/getDetailsHandler.php').then(function(data){
             $scope.building_info = data.data;
+
+           
+
             // console.log($scope.building_info);
 
             // console.log($scope.building_info[5][0]['coordinates']), {color: 'green',
@@ -300,30 +307,19 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         console.log(data);
 
         angular.forEach($scope.modal_info.rooms, function(value, key){
-            
             if(value.room_name === data){
-               
                 $('#info_modal').modal('toggle')
                
                var temp = value.coordinates;
-
                 var result = temp.slice(1,-1);
-
                 var coordinates = result.split(",");
-             
 
                  marker = L.marker(coordinates,
                                 {title: data}
                                 )
                .addTo(map);
-
-                  
             }
-
-        });  
-
-        
-       
+        });   
     }
            
     $scope.ClickHandler = function(data){
@@ -375,24 +371,50 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                     }
                 });  
                 // $scope.PMCTQ_unit = unittemp;
-
-
         });
-
         $('#info_modal').modal('toggle')
-        
-
     }
-
-
-
-
            // map.on('click', onMapClick);
             
    });
     }
 
 
+    $scope.DateTime = function (){
+      
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+        var hour = today.getHours();
+        var ampm = hour >= 12 ? 'pm' : 'am';
+
+        if (hour > 12) {
+            hour -= 12;
+        } else if (hour === 0) {
+            hour = 12;
+        }
+
+
+        var time = hour + ":" + today.getMinutes() + ":" + today.getSeconds() + " " + ampm;
+        var dateTime = date+' '+time;
+        $scope.datecurr = date;
+        $scope.datetime = time;
+
+       
+        // console.log(dateTime);
+    }
+
+    $scope.intervalFunction = function(){
+        $timeout(function() {
+            $scope.DateTime();
+          $scope.intervalFunction();
+        }, 1000)
+      };
+
+      init = function(){
+        $( "#datepicker" ).datepicker();
+        $('.datepicker').css('z-index',500);
+      }
 
 
     // $scope.mapmapparam = function() {
@@ -402,7 +424,18 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
    
 
-
+    
+    // $scope.DateTime();
+    // $(document).ready(
+    //     function() {
+    //     setInterval(function() {
+    //     var someval = Math.floor(Math.random() * 100);
+    //     //  $('#sample').text('Test' + someval);
+    //     $scope.DateTime();
+    //     }, 5000);  //Delay here = 5 seconds 
+    //    });
     load_init();
-
+   
+    $scope.intervalFunction();
+    init();
 }
