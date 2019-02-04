@@ -60,6 +60,28 @@
   background-color: #edffc2 !important;
 }
 
+.dark_blue_green{
+  background-color: #148c70 !important;
+  /* background-color: #4eb1a2 !important; */
+  color:azure;
+  font-style:italic;
+}
+
+.super_light_green{
+  background-color: #acffae !important;
+  /* background-color: #4eb1a2 !important; */
+  color:rgb(132, 26, 150) !important;
+  font-style:italic;
+}
+
+
+.light_blue{
+  background-color: #5dd4ff !important;
+  /* background-color: #4eb1a2 !important; */
+  color:rgb(20, 115, 115);
+  font-style:italic;
+}
+
 .medheight{
   height:80px !important;
 }
@@ -86,5 +108,22 @@ body{
 margin:0;
 }
 
+.card{
+  border:0 !important;
+}
 
-/* MODAL SETTINGS */
+/* DIV SETTINGS */
+.borderraidus{
+  border-radius: 5px 5px 5px 5px; 
+}
+
+/* ADD EVENT SETTINGS */
+div.card.subWidth{
+  width:80% !important;
+}
+
+hr.subEventHR { background-color: rgb(175, 255, 180); height: 1px; border: 0; }
+
+body > .ui-select-choices.open {
+  z-index: 1100; /* greater then ui bootstrap modal, that 1050 */
+}

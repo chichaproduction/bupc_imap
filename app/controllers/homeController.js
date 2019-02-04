@@ -1,4 +1,5 @@
-var bupc_imapControllers = angular.module("bupc_imap.Controllers", []);
+var bupc_imapControllers = angular.module("bupc_imap.Controllers", ['ngRoute', 'ui.select',
+'ngSanitize']);
 bupc_imapControllers.controller('bupc_imap_Controller', hello);
 
 // function hello($scope,piValue,ourPlanet,user,APP_NAME,APP_VERSION,API_URL, helloFactory, VAT, helloService)
@@ -25,31 +26,37 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
     // $scope.helloService = helloService.bite();
     // $scope.helloServiceName = helloService.hello("JOBERT");
 
-    // $scope.function
+    // // $scope.function
 
+    
 
  
 
     load_init = function(){
+        $scope.defaultView = 1;  // 1 = VIEW || 2 = ADD || 3 = EDIT 
+        $scope.defaultADDInputCriteria = 0;
 
-        
-        
+        $http.post('handler/getAllInfoHandler.php').then(function(data){
+            $scope.building_data = data.data;
+            
+
+            // $scope.addBuilding = [];
+            // angular.forEach($scope.building_data, function(value, key){
+            //     console.log(value.building_name);
+            //     $scope.addBuilding.push(value['building_name']);
+            // });  
+
+            // console.log($scope.addBuilding);
+
+         });
 
         $http.post('handler/getDetailsHandler.php').then(function(data){
             $scope.building_info = data.data;
 
+          
            
 
-            // console.log($scope.building_info);
-
-            // console.log($scope.building_info[5][0]['coordinates']), {color: 'green',
-            //     weight: 0,
-            //     opacity: .2,
-            //    // dashArray: '20,15',
-            //    // lineJoin: 'round'
-            // };
-
-
+      
 
         //map options
         var mapOptions = {
@@ -301,8 +308,11 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
             // //   $scope.mapmapparam();
             // }
 
+
+
+////////////////////////////////// MARKERS ////////////////////
            var marker;
-            
+        
     $scope.room_name_clicked = function(data){
         console.log(data);
 
@@ -334,7 +344,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////// BUILDING DESCRIPTIONS ////////////////////////////////////////////////////////////////////////
 
     $scope.modal_func = function(data) {
         var modalparam = data;
@@ -380,6 +390,8 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
     }
 
 
+///////////////////////  DATE TIME ////////////////////////////
+
     $scope.DateTime = function (){
       
         var today = new Date();
@@ -400,9 +412,10 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         $scope.datecurr = date;
         $scope.datetime = time;
 
-       
-        // console.log(dateTime);
     }
+
+//////////////////  MARQUEE DATE TIME REFRESH RATE ////////////
+
 
     $scope.intervalFunction = function(){
         $timeout(function() {
@@ -410,10 +423,168 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
           $scope.intervalFunction();
         }, 1000)
       };
+false
 
-      init = function(){
-        $( "#datepicker" ).datepicker();
+init = function(){
+        $( "#datepicker" ).datepicker({multipleDates: true});
         $('.datepicker').css('z-index',500);
+      }
+
+
+////////////////// EVENT CONTROLLER /////////////////
+$scope.eventController = function(param){
+    if(param == 1){    // SHOW VIEW INTERFACE
+        $scope.defaultView = 1;
+            $scope.defaultADDInputCriteria = 0;
+    }else if(param == 2){ // SHOW ADD INTERFACE
+        $scope.defaultView = 2;
+    }else if(param == 3){ // SHOW EDIT INTERFACE
+        $scope.defaultView = 3;
+            $scope.defaultADDInputCriteria = 0;
+    }else if(param == 4){ // SHOW REMOVE INTERFACE
+        $scope.defaultView = 4;
+            $scope.defaultADDInputCriteria = 0;
+    }
+
+
+    
+}
+
+
+
+////////////////// ADD EVENT /////////////////
+$scope.create_ADD_Date = function(){
+    var getEventDate = (angular.element('#event_date').val());
+    if(getEventDate == null || getEventDate == undefined || getEventDate == ""){
+        alertify.alert("A date needs to be specified!").setHeader('<em> Alert! </em> '); 
+    }else{
+
+        var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        //EVENT DATE
+        $scope.defaultADDInputCriteria = 1;
+            var res = getEventDate.split('/');
+        if(res[0] == '01'){res[0] = month[0]}
+        else if(res[0] == '02'){res[0] = month[1]}
+        else if(res[0] == '03'){res[0] = month[2]}
+        else if(res[0] == '04'){res[0] = month[3]}
+        else if(res[0] == '05'){res[0] = month[4]}
+        else if(res[0] == '06'){res[0] = month[5]}
+        else if(res[0] == '07'){res[0] = month[6]}
+        else if(res[0] == '08'){res[0] = month[7]}
+        else if(res[0] == '09'){res[0] = month[8]}
+        else if(res[0] == '10'){res[0] = month[9]}
+        else if(res[0] == '11'){res[0] = month[10]}
+        else if(res[0] == '12'){res[0] = month[11]}
+        
+        $scope.viewEventDate = res.join("  ");
+        $scope.eventDate = getEventDate;
+    }
+
+
+    var getEventDate = (angular.element('#event_date').val());
+    var getEventName = (angular.element('#event_Name').val());
+    var getEventDescription = (angular.element('#eventDescription').val());
+   
+
+
+   // console.log($scope.add);
+    if(getEventDate == undefined || getEventDate == null || getEventDate == "" ||
+    getEventName == undefined || getEventName == null || getEventName == "" ||
+    getEventDescription == undefined || getEventDescription == null || getEventDescription == "" 
+    ){
+       alertify.alert("Please fill up all missing requirements!").setHeader('<em> Alert! </em> '); 
+    
+   }else{
+       $scope.EventHoldertemp = {  
+                   "event_name" : getEventName,
+                   "event_date" : getEventDate,
+                   "event_description" : getEventDescription,
+                   "sub_specification" : []
+               };
+   }
+
+
+
+
+
+
+}
+
+$scope.addBuildingChange = function(){
+    var selectedBui = $scope.add.buildingName
+   
+
+            $scope.addRoom = [];
+            angular.forEach($scope.building_data, function(value, key){
+                if(value.building_name === selectedBui){
+                        console.log(value.building_name + " IS EQUAL " + selectedBui);
+
+                        angular.forEach(value.rooms, function(value1, key1){
+                            $scope.addRoom.push(value1.room_name);
+                        });
+
+                }else{
+
+                }
+            });  
+}
+
+$scope.addSubEvent = function(){
+
+  
+             var getSubEventName = (angular.element('#subevent_name').val());
+             var getStartTimeFrom = (angular.element('#event_start_time').val());
+             var getEndTimeFrom = (angular.element('#event_end_time').val());
+             var getBuilding = (angular.element('#repeatSelectBui').val());
+             var getRoom = (angular.element('#repeatSelectRoom').val());
+              var getSubEventDescription = (angular.element('#subEventDescription').val());
+
+
+            // console.log($scope.add);
+             if(
+             getSubEventName == undefined || getSubEventName == null || getSubEventName == "" ||
+             getStartTimeFrom == undefined || getStartTimeFrom == null || getStartTimeFrom == "" ||
+             getEndTimeFrom == undefined || getEndTimeFrom == null || getEndTimeFrom == "" ||
+             getBuilding == undefined || getBuilding == null || getBuilding == "" ||
+             getRoom == undefined || getRoom == null || getRoom == "" ||
+             getSubEventDescription == undefined || getSubEventDescription == null || getSubEventDescription == "" 
+             ){
+                alertify.alert("Please fill up all missing requirements!").setHeader('<em> Alert! </em> '); 
+             
+            }else{
+                var counter = $scope.EventHoldertemp.sub_specification.length;
+                console.log(counter);
+                        $scope.event_temp = 
+                                {
+                                    "id" : counter,
+                                    "sub_event_name" : getSubEventName,
+                                    "sub_event_start_time" : getStartTimeFrom,
+                                    "sub_event_end_time" : getEndTimeFrom,
+                                    "sub_event_building" : getBuilding,
+                                    "sub_event_room" : getRoom,
+                                    "sub_event_description" : getSubEventDescription,
+                                };
+
+                                $scope.EventHoldertemp.sub_specification.push($scope.event_temp);
+               
+
+                console.log($scope.EventHoldertemp);
+
+            }
+}
+
+
+
+
+
+      $scope.newDiv = function(){
+        var iDiv = document.createElement('div');
+        iDiv.id = 'block';
+        iDiv.className = 'block';
+        document.getElementById('generateEvent').append(iDiv);
+        
+        iDiv.innerHTML = "I'm the first div";
       }
 
 
