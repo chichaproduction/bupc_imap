@@ -426,8 +426,12 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 false
 
 init = function(){
-        $( "#datepicker" ).datepicker({multipleDates: true});
-        $('.datepicker').css('z-index',500);
+
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);  // Get Date Tomorrow // User cannot set a schedule less than tomorrow
+        $( "#event_date" ).datepicker({minDate: tomorrow});
+        $('#event_date').css('z-index',500);
+        
       }
 
 
@@ -520,9 +524,14 @@ $scope.addBuildingChange = function(){
                 if(value.building_name === selectedBui){
                         console.log(value.building_name + " IS EQUAL " + selectedBui);
 
-                        angular.forEach(value.rooms, function(value1, key1){
+                            if(value.rooms.length == 0){
+                            $scope.addRoom.push("None");
+
+                            }else{
+                            angular.forEach(value.rooms, function(value1, key1){
                             $scope.addRoom.push(value1.room_name);
-                        });
+                            });
+                        }
 
                 }else{
 
@@ -538,23 +547,123 @@ $scope.addSubEvent = function(){
              var getEndTimeFrom = (angular.element('#event_end_time').val());
              var getBuilding = (angular.element('#repeatSelectBui').val());
              var getRoom = (angular.element('#repeatSelectRoom').val());
-              var getSubEventDescription = (angular.element('#subEventDescription').val());
+             var getSubEventDescription = (angular.element('#subEventDescription').val());
+             var getSubEventHost = (angular.element('#subevent_host').val());
 
-
-            // console.log($scope.add);
              if(
-             getSubEventName == undefined || getSubEventName == null || getSubEventName == "" ||
-             getStartTimeFrom == undefined || getStartTimeFrom == null || getStartTimeFrom == "" ||
-             getEndTimeFrom == undefined || getEndTimeFrom == null || getEndTimeFrom == "" ||
-             getBuilding == undefined || getBuilding == null || getBuilding == "" ||
-             getRoom == undefined || getRoom == null || getRoom == "" ||
-             getSubEventDescription == undefined || getSubEventDescription == null || getSubEventDescription == "" 
+             getSubEventName == undefined || getSubEventName == null || getSubEventName == "" || getSubEventName.length == 0 || 
+             getStartTimeFrom == undefined || getStartTimeFrom == null || getStartTimeFrom == "" || getStartTimeFrom.length == 0 ||
+             getEndTimeFrom == undefined || getEndTimeFrom == null || getEndTimeFrom == "" || getEndTimeFrom.length == 0 ||
+             getBuilding == undefined || getBuilding == null || getBuilding == "" || getBuilding.length == 0 || typeof getBuilding === 'undefined' ||  getBuilding === '? object:null ?' || getBuilding === '? undefined:undefined ?' ||
+             getRoom == undefined || getRoom == null || getRoom == "" || getRoom.length == 0 || typeof getRoom === 'undefined' || getRoom === '? object:null ?' || getRoom === '? undefined:undefined ?' ||
+             getSubEventDescription == undefined || getSubEventDescription == null || getSubEventDescription == "" || getSubEventDescription.length == 0 ||
+             getSubEventHost == undefined || getSubEventHost == null || getSubEventHost == "" || getSubEventHost.length == 0 
              ){
                 alertify.alert("Please fill up all missing requirements!").setHeader('<em> Alert! </em> '); 
-             
+              
             }else{
-                var counter = $scope.EventHoldertemp.sub_specification.length;
-                console.log(counter);
+                
+                timestr1 = getStartTimeFrom;
+                timestr2 = getEndTimeFrom;
+                    if(timestr1 > timestr2){
+                alertify.alert("<p style='color:red;'>Invalid Start time and End time!</p>").setHeader('<em> Alert! </em> '); 
+            }else{
+                            if(getRoom === 'None'){
+                                var getBuiRoo = getBuilding;
+                            }else{
+                                var getBuiRoo = getBuilding + ' - ' + getRoom;
+                            }
+
+
+                        (angular.element('#subevent_name').val(""));
+                        (angular.element('#event_start_time').val(""));
+                        (angular.element('#event_end_time').val(""));
+                        (angular.element('#repeatSelectBui').val(""));
+                        (angular.element('#repeatSelectRoom').val(""));
+                        (angular.element('#subEventDescription').val(""));
+                        (angular.element('#subevent_host').val(""));
+
+                var timestr1_1 = getStartTimeFrom;
+                var timestr2_1 = getEndTimeFrom;
+
+                var splitime1 = timestr1_1.split(":");
+                var splitime2 = timestr2_1.split(":"); 
+                
+                var spl1ampm = timestr1_1 >= '12:00' ? 'pm' : 'am' 
+                var spl2ampm = timestr2_1 >= '12:00' ? 'pm' : 'am' 
+
+                //CHECK IF START TIME IS AM OR PM // Then Minus 12 if PM  
+                    if(spl1ampm == 'pm'){
+                        var startHour =  parseInt(splitime1[0]);
+                        var startMin =  parseInt(splitime1[1]);
+                        
+                        if(startHour == 12){
+                            var finalStartTime = startHour + ":" + startMin  + " " + spl1ampm;
+                        }else{
+                            var hourstart = startHour - 12;
+
+                        var finalStartTime = hourstart + ":" + startMin  + " " + spl1ampm;
+                        }
+                        
+
+
+                        
+                    }else{
+                        var startHour1 =  parseInt(splitime1[0]);
+                        var startMin1 =  parseInt(splitime1[1]);
+
+                        if(startHour1 == 00){
+
+                            var hourstart1 = 12;
+                            var finalStartTime = hourstart1 + ":" + startMin1  + " " + spl1ampm;
+                        }else{
+                            var finalStartTime = timestr1_1 + spl1ampm;
+                        }
+                    }
+
+                //CHECK IF END TIME IS AM OR PM // Then Minus 12 if PM  
+                if(spl2ampm == 'pm'){
+                    var endHour =  parseInt(splitime2[0]);
+                    var endMin =  parseInt(splitime2[1]);
+
+                    if(endHour == 12){
+                        var finalEndTime = endHour + ":" + endMin + " " + spl2ampm;
+                    }else{
+                        var hourend =  endHour - 12;
+
+                         var finalEndTime = hourend + ":" + endMin + " " + spl2ampm;
+                    }
+                    
+                    
+
+                }else{
+                        var endHour1 =  parseInt(splitime2[0]);
+                        var endMin1 =  parseInt(splitime2[1]);
+
+                        if(endHour1 == 00){
+
+                            var hourend1 = 12;
+                            var finalEndTime = hourend1 + ":" + endMin1  + " " + spl2ampm;
+                        }else{
+                            var finalEndTime = timestr2_1 + spl2ampm;
+                        }
+
+
+
+
+                }
+
+                
+
+
+                // if (timestr1_1 > '12:59') {
+                //     hour -= 12;
+                // } else if (hour === 0) {
+                //     hour = 12;
+                // }
+
+
+                        var counter = $scope.EventHoldertemp.sub_specification.length;
                         $scope.event_temp = 
                                 {
                                     "id" : counter,
@@ -564,16 +673,67 @@ $scope.addSubEvent = function(){
                                     "sub_event_building" : getBuilding,
                                     "sub_event_room" : getRoom,
                                     "sub_event_description" : getSubEventDescription,
+                                    "sub_event_hosted_at"   : getBuiRoo,
+                                    "sub_event_hosted_by"   : getSubEventHost,
+                                    "show_start"   : finalStartTime,
+                                    "show_end"   : finalEndTime
                                 };
 
                                 $scope.EventHoldertemp.sub_specification.push($scope.event_temp);
-               
-
-                console.log($scope.EventHoldertemp);
+                }
 
             }
 }
 
+
+$scope.removeSubEvent = function(id, name){
+    alertify.confirm('Do you want to remove <b>"' + name +  '"</b> sub-event?',
+
+
+
+            function(){
+                $scope.EventHoldertemp.sub_specification.splice(id-1, 1);
+                alertify.success('Remove Succesfully');
+            },
+            function(){
+                alertify.error('Remove Cancelled');
+            }  
+            ).setHeader('<em> Alert! </em> ');
+  
+}
+
+
+$scope.saveEvent = function(name){
+    console.log($scope.EventHoldertemp);
+    console.log($scope.EventHoldertemp.sub_specification);
+    if($scope.EventHoldertemp.sub_specification.length == 0){
+
+        alertify.alert("<b style='color:red;'>You need to create a schedule of sub-events first!</b>").setHeader('<em> Alert! </em> '); 
+    }else{
+           alertify.confirm('<p style="color:red;">WARNING! </p>Do you want to Save  <b>"' + name +  '"</b> event? <br>',
+
+
+
+            function(){
+
+                $scope.EventHolder = JSON.stringify($scope.EventHoldertemp);
+                
+                    $http.post('handler/insertEventHandler.php', $scope.EventHolder).then(function(data){
+                        // $scope.PMCTQ_unit = unittemp;
+                    });
+
+                alertify.success('Saved Succesfully');
+            },
+            function(){
+                alertify.error('Save Cancelled');
+            }  
+            ).setHeader('<em> Confirm! </em> ');
+    }
+
+
+ 
+  
+}
 
 
 

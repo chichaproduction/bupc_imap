@@ -148,7 +148,7 @@
                               </div>
                               <div class="row">
                                     <div class="col-lg-12">
-                                    Event Date:
+                                    Event Date: <span style="color: #ffae9a !important">*cannot set event less than tomrrow's date</span>
                                         <input id="event_date" 
                                         style="width:100%;"
                                         ng-model="add.eventDate" 
@@ -223,6 +223,19 @@
                                                   <textarea class="form-control" ng-model="add.subEventDescription" id="subEventDescription" rows="2" ng-required="true"></textarea>  
                                                 </div>     
                                             </div>
+                                           <br>
+                                            <!-- <p style="color: #ffae9a !important">* </p> -->
+                                            <div class="row">
+                                                  <div class="col-lg-12">
+                                                    <div class="input-group input-group-sm">
+                                                      <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="inputGroup-sizing-sm">Sub-event Host </span>
+                                                      </div>
+                                                      <input id="subevent_host" type="text" ng-model="add.subEventHost" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" ng-required="true">
+                                                    </div>
+                                                  </div>
+                                            </div>
+                                            <p style="color: #ffae9a !important">* serves as host description, you can type multiple person, organization, departments, and etc. <br> * seperate each by a comma [,].</p>
 
 
                                             
@@ -230,10 +243,7 @@
 
                                             <br>
                                             <div class="row">
-                                                <div class="col-lg-6">
-                                                  <button style="width:100% !important;" type="button" class="btn btn-danger" ng-click="eventController(2)">[-] Delete Sub-Event</button>
-                                                </div>     
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                   <button style="width:100% !important;" type="button" class="btn btn-success" ng-click="addSubEvent()">[+] Add Sub-Event</button>
                                                 </div>   
                                             </div>
@@ -260,6 +270,12 @@
                                                   <h6 style="mar">{{EventHoldertemp.event_description}}<h6>
                                                 </div>
                                           </div>
+                                          
+                                          <div class="row">
+                                                <div class="col-lg-12 text-center" style="color:red !important;">
+                                                  *You can remove a sub-event by clicking on the [-]
+                                                </div>
+                                          </div>
 
                                           <div class="row" ng-repeat="(key, value) in EventHoldertemp.sub_specification track by $index">
                                           <div class="col-lg-12 table-responsive table-responsive-sm"> 
@@ -271,28 +287,33 @@
                                                   {{value.sub_event_description}} -->
 
 
-                                                  <table class="table table-sm">
-                                                    <thead>
-                                                    <tr>
-                                                        <th scope="col" colspan="5" class="bg-success">{{value.sub_event_name}}</th>
+                                                  <table class="table table-sm table-bordered table-hover">
+                                                    
+                                                    <tr class="text-center" style="color:white !important;">
+                                                        <th scope="col" colspan="5" class="bg-success"><h5>{{value.sub_event_name}}<h5></th>
                                                       </tr>
-                                                      <tr class="table-success">
-                                                        <th scope="col">#</th>
+                                                      <tr>
+                                                      <th class="bg-danger align-middle text-center " style="color:white;" rowspan="4" scope="row" ng-click="removeSubEvent(value.id, value.sub_event_name)"><h3> - <h3></th>
                                                         <th scope="col">Start</th>
                                                         <th scope="col">End</th>
                                                         <th scope="col">Hosted at</th>
-                                                        <th scope="col">Description</th>
+                                                        <th scope="col">Hosted by</th>
                                                       </tr>
-                                                    </thead>
-                                                    <tbody>
+                                                   
                                                       <tr class="table-success">
-                                                        <th scope="row">{{value.id}}</th>
-                                                        <td>{{value.sub_event_start_time}}</td>
-                                                        <td>{{value.sub_event_end_time}}</td>
-                                                        <td>@ {{value.sub_event_building}} - {{value.sub_event_room}}</td>
-                                                        <td>{{value.sub_event_description}}</td>
+                                                        <td>{{value.show_start}}</td>
+                                                        <td>{{value.show_end}}</td>
+                                                        <td>@ {{value.sub_event_hosted_at}}</td>
+                                                        <td>{{value.sub_event_hosted_by}}</td>
+                                                        
+                                                      </tr> 
+                                                    
+                                                      <tr>
+                                                        <th scope="col" colspan="4">Description</th>
                                                       </tr>
-                                                    </tbody>
+                                                      <tr class="table-success">
+                                                        <td  colspan="4">{{value.sub_event_description}}</td>
+                                                      </tr>
                                                   </table>
 
                                                   
@@ -306,7 +327,7 @@
                                          <!-- VIEW SUBEVENTS-->
                                          <div class="card"  ng-show="defaultADDInputCriteria == 1" >
                                         <div class="card-body">
-                                        <button type="button" class="btn btn-primary btn-lg btn-block">SAVE EVENT</button>
+                                        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="saveEvent(EventHoldertemp.event_name)">SAVE EVENT</button>
                                         </div>
                                       </div>
                           
