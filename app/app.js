@@ -1,6 +1,7 @@
 var bupc_imap = angular.module("bupc_imap", [
     'ui.select',
     'ngRoute',
+    // 'ui.bootstrap',
     'ngSanitize',
     'bupc_imap.Controllers']);
 //defines a variable MyAPP. The Angular module object with a namespace of MyApp is assigned to our variable.

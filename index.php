@@ -125,6 +125,81 @@
                   </i></marquee> 
 
             <!--       EVENT WOKRPLACE       -->
+             <!-- VIEW Event -->
+            <div class="card" ng-show="defaultView == 1" >
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="accordion" id="accordionEvent" ng-repeat="(key, value) in event_data track by $index">
+                      <div class="card text-white bg-danger" style="border-radius: 5px 5px 5px 5px !important; ">
+                        <div class="card-header collapsed text-center" id="event_modal_head_{{key}}" data-toggle="collapse" data-target="#event_modal_id_{{key}}" aria-expanded="true" aria-controls="event_modal_id_{{key}}">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                  <strong><font color="#edbbff">{{value.event_date}}</font> <span class="badge badge-info">{{value.sub_count}}</span><h5>{{value.event_name}} </h5></strong>    
+                             
+                              <div class="text-center" style="border: 1px dotted white;">"{{value.event_desc}}"</div>    
+                              </div>
+                            </div>
+                        
+                                              
+                        </div>
+                              <div id="event_modal_id_{{key}}" class="collapse" aria-labelledby="event_modal_head_{{key}}" data-parent="#accordionEvent">
+  
+                                <div class="card-body">
+                                  
+                                  <!-- SUB EVENT VIEW -->
+                                   <div class="accordion" id="accordionEvent1" ng-repeat="(key1, value1) in value.sub_events track by $index">
+                                        <div class="card bg-light" style="color:black !important;">
+                                          <div class="card-header collapsed" id="sub_event_modal_head_{{key1}}" data-toggle="collapse" data-target="#sub_event_modal_id_{{key1}}" aria-expanded="true" aria-controls="sub_event_modal_id_{{key1}}">
+
+                                          <div class="row">
+                                            <div class="col-lg-6 text-center">
+                                              <h5><span class="badge badge-secondary">{{value1.sub_show_start_time}}</span> - <span class="badge badge-secondary">{{value1.sub_show_end_time}}</span> </h5> 
+                                            </div>
+                                            <div class="col-lg-6 text-center">
+                                              <h5><strong>{{value1.sub_event_name}}</strong></h5> 
+                                            </div>
+                                          </div>
+
+                                                            
+                                          </div>
+                                                <div id="sub_event_modal_id_{{key1}}" class="collapse" aria-labelledby="sub_event_modal_head_{{key1}}" data-parent="#accordionEvent1">
+                                                  <div class="card-body">
+                                                    <div class="row">
+                                                      <div class="col-lg-12 text-center">
+                                                        <h6><strong>"{{value1.sub_event_desc}}"</strong></h6>
+                                                      </div>
+                                                    </div>
+                                                    <div class="row">
+                                                      <div class="col-lg-5 text-center" style>
+                                                    
+                                                        <h6><span class="badge badge-warning">Host: {{value1.sub_event_hosted_by}}</span></h6> 
+                                                      </div>
+                                                      <div class="col-lg-7 text-center">
+                                                        <h6><span class="badge badge-warning">@ {{value1.sub_event_hosted_at}}</span></h6> 
+                                                      </div>
+                                                    </div>
+
+
+                                                  </div>
+                                                </div>
+                                        </div>
+                                        <br>
+                                      </div>
+                                      <!-- SUB EVENT VIEW END -->
+                                </div>
+                              </div>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
 
                           <!-- ADD Event -->
                           <div class="card" ng-show="defaultView == 2" >
@@ -340,7 +415,6 @@
                   <button type="button" class="btn btn-danger"   ng-click="eventController(4)">Remove Event</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
-
 
         </div>
       </div>

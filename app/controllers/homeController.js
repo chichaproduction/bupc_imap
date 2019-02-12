@@ -1,4 +1,7 @@
-var bupc_imapControllers = angular.module("bupc_imap.Controllers", ['ngRoute', 'ui.select',
+var bupc_imapControllers = angular.module("bupc_imap.Controllers", [
+    'ngRoute', 
+    'ui.select',
+    // 'ui.bootstrap',
 'ngSanitize']);
 bupc_imapControllers.controller('bupc_imap_Controller', hello);
 
@@ -35,6 +38,102 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
     load_init = function(){
         $scope.defaultView = 1;  // 1 = VIEW || 2 = ADD || 3 = EDIT 
         $scope.defaultADDInputCriteria = 0;
+
+
+        $http.post('handler/getAllEventHandler.php').then(function(data){
+            $scope.event_data = data.data;
+
+
+              angular.forEach($scope.event_data, function(value, key){
+                  var temp_counter =  value.sub_events.length;
+                value['sub_count'] = temp_counter;
+                angular.forEach(value.sub_events, function(value1, key1){
+                    
+                        var timestr1_1 = value1.sub_event_time_start;
+                        var timestr2_1 = value1.sub_event_time_end;
+
+                        var splitime1 = timestr1_1.split(":");
+                        var splitime2 = timestr2_1.split(":"); 
+                        
+                        var spl1ampm = timestr1_1 >= '12:00' ? 'pm' : 'am' 
+                        var spl2ampm = timestr2_1 >= '12:00' ? 'pm' : 'am' 
+
+                        //CHECK IF START TIME IS AM OR PM // Then Minus 12 if PM  
+                            if(spl1ampm == 'pm'){
+                                var startHour =  parseInt(splitime1[0]);
+                                var startMin =  parseInt(splitime1[1]);
+                                
+                                if(startHour == 12){
+                                    var finalStartTime = startHour + ":" + splitime1[1]  + " " + spl1ampm;
+                                }else{
+                                    var hourstart = startHour - 12;
+
+                                var finalStartTime = hourstart + ":" + splitime1[1]  + " " + spl1ampm;
+                                }
+                                
+
+
+                                
+                            }else{
+                                var startHour1 =  parseInt(splitime1[0]);
+                                var startMin1 =  parseInt(splitime1[1]);
+
+                                if(startHour1 == 00){
+
+                                    var hourstart1 = 12;
+                                    var finalStartTime = hourstart1 + ":" + splitime1[1]  + " " + spl1ampm;
+                                }else{
+                                    var finalStartTime = timestr1_1 + " " + spl1ampm;
+                                }
+                            }
+
+                        //CHECK IF END TIME IS AM OR PM // Then Minus 12 if PM  
+                        if(spl2ampm == 'pm'){
+                            var endHour =  parseInt(splitime2[0]);
+                            var endMin =  parseInt(splitime2[1]);
+
+                            if(endHour == 12){
+                                var finalEndTime = endHour + ":" + splitime2[1] + " " + spl2ampm;
+                            }else{
+                                var hourend =  endHour - 12;
+
+                                var finalEndTime = hourend + ":" + splitime1[1] + " " + spl2ampm;
+                            }
+                            
+                            
+
+                        }else{
+                                var endHour1 =  parseInt(splitime2[0]);
+                                var endMin1 =  parseInt(splitime2[1]);
+
+                                if(endHour1 == 00){
+
+                                    var hourend1 = 12;
+                                    var finalEndTime = hourend1 + ":" + splitime2[1]  + " " + spl2ampm;
+                                }else{
+                                    var finalEndTime = timestr2_1 + " " + spl2ampm;
+                                }
+
+
+
+
+                        }
+                        value1['sub_show_start_time'] = finalStartTime;
+                        value1['sub_show_end_time'] = finalEndTime;
+                    
+                });  
+    
+
+            });  
+
+         
+
+
+
+      
+   console.log($scope.event_data);
+
+         });
 
         $http.post('handler/getAllInfoHandler.php').then(function(data){
             $scope.building_data = data.data;
@@ -250,25 +349,25 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                // lineJoin: 'round'
             }).addTo(map);
 
-            cb.on('click',       function(e){ $scope.building_code = $scope.building_info_cb['building_code']; $scope.ClickHandler() });
-            sb.on('click',       function(e){ $scope.building_code = $scope.building_info_sb['building_code']; $scope.ClickHandler() });
-            ab.on('click',       function(e){ $scope.building_code = $scope.building_info_ab['building_code']; $scope.ClickHandler() });
-            avr.on('click',      function(e){ $scope.building_code = $scope.building_info_avr['building_code']; $scope.ClickHandler() });
+            cb.on('click',       function(e){ $scope.building_code = $scope.building_info_cb['building_code'];   $scope.ClickHandler() });
+            sb.on('click',       function(e){ $scope.building_code = $scope.building_info_sb['building_code'];   $scope.ClickHandler() });
+            ab.on('click',       function(e){ $scope.building_code = $scope.building_info_ab['building_code'];   $scope.ClickHandler() });
+            avr.on('click',      function(e){ $scope.building_code = $scope.building_info_avr['building_code'];  $scope.ClickHandler() });
             cesd.on('click',     function(e){ $scope.building_code = $scope.building_info_cesd['building_code']; $scope.ClickHandler() });
-            css.on('click',      function(e){ $scope.building_code = $scope.building_info_css['building_code']; $scope.ClickHandler() });
-            canteen.on('click',  function(e){ $scope.building_code = $scope.building_info_c['building_code']; $scope.ClickHandler() });
-            nursing.on('click',  function(e){ $scope.building_code = $scope.building_info_n['building_code']; $scope.ClickHandler() });
-            nursing2.on('click', function(e){ $scope.building_code = $scope.building_info_n2['building_code']; $scope.ClickHandler() });
-            ft.on('click',       function(e){ $scope.building_code = $scope.building_info_ft['building_code']; $scope.ClickHandler() });
-            bg.on('click',       function(e){ $scope.building_code = $scope.building_info_bg['building_code']; $scope.ClickHandler() });
-            dorm.on('click',     function(e){ $scope.building_code = $scope.building_info_d['building_code']; $scope.ClickHandler() });
-            sf.on('click',       function(e){ $scope.building_code = $scope.building_info_sf['building_code']; $scope.ClickHandler() });
-            tb.on('click',       function(e){ $scope.building_code = $scope.building_info_tb['building_code']; $scope.ClickHandler() });
-            atb.on('click',      function(e){ $scope.building_code = $scope.building_info_atb['building_code']; $scope.ClickHandler() });
+            css.on('click',      function(e){ $scope.building_code = $scope.building_info_css['building_code'];  $scope.ClickHandler() });
+            canteen.on('click',  function(e){ $scope.building_code = $scope.building_info_c['building_code'];    $scope.ClickHandler() });
+            nursing.on('click',  function(e){ $scope.building_code = $scope.building_info_n['building_code'];    $scope.ClickHandler() });
+            nursing2.on('click', function(e){ $scope.building_code = $scope.building_info_n2['building_code'];   $scope.ClickHandler() });
+            ft.on('click',       function(e){ $scope.building_code = $scope.building_info_ft['building_code'];   $scope.ClickHandler() });
+            bg.on('click',       function(e){ $scope.building_code = $scope.building_info_bg['building_code'];   $scope.ClickHandler() });
+            dorm.on('click',     function(e){ $scope.building_code = $scope.building_info_d['building_code'];    $scope.ClickHandler() });
+            sf.on('click',       function(e){ $scope.building_code = $scope.building_info_sf['building_code'];   $scope.ClickHandler() });
+            tb.on('click',       function(e){ $scope.building_code = $scope.building_info_tb['building_code'];   $scope.ClickHandler() });
+            atb.on('click',      function(e){ $scope.building_code = $scope.building_info_atb['building_code'];  $scope.ClickHandler() });
             repc.on('click',     function(e){ $scope.building_code = $scope.building_info_repc['building_code']; $scope.ClickHandler() });
             arec.on('click',     function(e){ $scope.building_code = $scope.building_info_arec['building_code']; $scope.ClickHandler() });
             mwsb.on('click',     function(e){ $scope.building_code = $scope.building_info_mwsb['building_code']; $scope.ClickHandler() });
-            m.on('click',        function(e){ $scope.building_code = $scope.building_info_m['building_code']; $scope.ClickHandler() });
+            m.on('click',        function(e){ $scope.building_code = $scope.building_info_m['building_code'];    $scope.ClickHandler() });
 
 
      
@@ -292,11 +391,14 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
             //     map.fitBounds(group.getBounds());
 
     ////////////////////////////////////////////////////////////////////////////////////// MARKER SINGLE
-            // var marker = L.marker([66.15385236732068, 100.54687500000001],
-            //     {title: 'Hover Text'}
-            //     )
-            //    .addTo(map);
+    // $scope.room_name_clicked = function(data){
+    //         var marker = L.marker([66.15385236732068, 100.54687500000001],
+    //             {title: 'Hover Text'}
+    //             )
+    //            .addTo(map);
+    // }
 
+  
     
     ////////////////////////////////////////////////////////////////////////////////////// GET LAT LNG OF MAP
             // function onMapClick(e) {
@@ -316,11 +418,16 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
     $scope.room_name_clicked = function(data){
         console.log(data);
 
+        if(marker){
+            map.removeLayer(marker); // remove
+            map.removeControl(marker); // remove
+        }
+
         angular.forEach($scope.modal_info.rooms, function(value, key){
             if(value.room_name === data){
                 $('#info_modal').modal('toggle')
                
-               var temp = value.coordinates;
+                var temp = value.coordinates;
                 var result = temp.slice(1,-1);
                 var coordinates = result.split(",");
 
@@ -352,7 +459,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         
             $http.post('handler/homeHandler.php', modal_param).then(function(data){
                 $scope.modal_info = data.data[0];
-                console.log( $scope.modal_info);
+                // console.log( $scope.modal_info);
 
                 $scope.classroom     = [];
                 $scope.office        = [];
@@ -365,19 +472,19 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
                     if(value.room_type === '0'){
                         $scope.classroom.push($scope.modal_info.rooms[key]);
-                        console.log(value.room_type + " CLASSROOM");
+                        // console.log(value.room_type + " CLASSROOM");
                     }else if (value.room_type === '1'){
                         $scope.office.push($scope.modal_info.rooms[key]);
-                        console.log(value.room_type + " OFFICE");
+                        // console.log(value.room_type + " OFFICE");
                     }else if (value.room_type === '3'){
                         $scope.office.push($scope.modal_info.rooms[key]);
-                        console.log(value.room_type + " OFFICE");
+                        // console.log(value.room_type + " OFFICE");
                     }else if (value.room_type === '2'){
                         $scope.comfortroom.push($scope.modal_info.rooms[key]);
-                        console.log(value.room_type + " CR");
+                        // console.log(value.room_type + " CR");
                     }else if (value.room_type === '4'){
                         $scope.facility.push($scope.modal_info.rooms[key]);
-                        console.log(value.room_type + " FACILITY");
+                        // console.log(value.room_type + " FACILITY");
                     }
                 });  
                 // $scope.PMCTQ_unit = unittemp;
@@ -723,6 +830,7 @@ $scope.saveEvent = function(name){
                     });
 
                 alertify.success('Saved Succesfully');
+                $('#myModal').modal('toggle')
             },
             function(){
                 alertify.error('Save Cancelled');
