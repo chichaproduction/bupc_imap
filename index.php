@@ -1,3 +1,5 @@
+<?php session_start();?>
+
 <!DOCTYPE html>
 <html ng-app="bupc_imap" ng-controller="bupc_imap_Controller">
     <head>
@@ -14,7 +16,10 @@
         <link href="css/select2.css"  rel="stylesheet">
         <link href="css/select2.min.css"  rel="stylesheet">
         <!-- main -->
-        <link href="css/alertify.min.css" rel="stylesheet">
+        
+        <link href="css/alertify.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/themes/bootstrap.css">
+        <!-- <link href="css/alertify.css" rel="stylesheet"> -->
 
             <!-- main -->
         <link href="css/full.css" rel="stylesheet">
@@ -26,14 +31,15 @@
 
           <!-- BOOTSTRAP priority 2 -->
           <script src="js/bootstrap.min.js"></script>
-
+ <!-- ALERTIFY -->
+          <script src="js/alertify.js"></script>
           <!-- Angular JS Scripts -->
           <script src="js/angular.min.js"></script>
           <script src="js/angular-route.min.js"></script>
 
           <!-- LEAFLET -->
           <script src="node_modules/leaflet/dist/leaflet.js"></script>
-
+         
           <!-- DatePicker -->
           <script src="js/datepicker.js"></script>
           <script src="js/i18n/datepicker.en.js"></script>
@@ -80,7 +86,7 @@
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item active">
-                <a class="nav-link" href="#">Home
+                <a class="nav-link" onclick="window.location.reload(true);" href="#">Home
                   <span class="sr-only">(current)</span>
                 </a>
               </li>
@@ -91,7 +97,7 @@
                 <a class="nav-link" href="#">About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Free View</a>
+                <a class="nav-link" href="#"  data-toggle="modal" data-target="#accessModal"><h5>{{currentuser}}</h5></a>
               </li>
             </ul>
           </div>
@@ -101,6 +107,45 @@
       <div class="container navtopfix full" style="height:100%; padding:0;">
       <div id="map"></div>
       </div>
+
+      <!-- ACCESS MODAL -->
+<form>
+      <div class="modal fade" id="accessModal" tabindex="-1" role="dialog" aria-labelledby="accessModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-success textWhite">
+              <h5 class="modal-title" id="accessModalCenterTitle">Access</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" ng-show="hasaccess == 0">
+                  
+                    <div class="form-group">
+                    <small class="form-text text-muted text-center" style="color:red !important;">*Access to Event Management.</small>
+                      <label for="usernameInput">Username</label>
+                      <input autocomplete="off" ng-model="user_user" type="text" class="form-control" id="usernameInput" placeholder="Enter Username" required>
+                      
+                    </div>
+                    <div class="form-group">
+                      <label for="InputPassword">Password</label>
+                      <input autocomplete="off" ng-model="user_pass" type="password" class="form-control" id="InputPassword" placeholder="Password" required>
+                    </div>
+            </div>
+
+            <div class="modal-body" ng-show="hasaccess == 1">
+                  <h4>Account: <strong>{{currentuser}}</strong></h4>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button ng-show="hasaccess == 0" type="submit" class="btn btn-primary" ng-click="submitLogIn(user_user, user_pass)">Submit</button>
+              <button ng-show="hasaccess == 1" type="submit" class="btn btn-primary" ng-click="submitLogOut()">Logout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+ </form>
 
       <!-- Large modal -->
         <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".eventsModal">Large modal</button> -->
@@ -410,9 +455,9 @@
 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-primary" ng-click="eventController(1)">View Event</button>
-                  <button type="button" class="btn btn-success" ng-click="eventController(2)">Add Event</button>
-                  <button type="button" class="btn btn-warning" ng-click="eventController(3)">Edit Event</button>
-                  <button type="button" class="btn btn-danger"   ng-click="eventController(4)">Remove Event</button>
+                  <button ng-show="tempadminaccess == 1" type="button" class="btn btn-success" ng-click="eventController(2)">Add Event</button>
+                  <button ng-show="adminaccess == 1" type="button" class="btn btn-warning" ng-click="eventController(3)">Edit Event</button>
+                  <button ng-show="adminaccess == 1" type="button" class="btn btn-danger"   ng-click="eventController(4)">Generate Temporary Account</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
 
@@ -420,7 +465,7 @@
       </div>
     </div>
 
-      
+  
 
 <!-- 
     <div class="container col-12">

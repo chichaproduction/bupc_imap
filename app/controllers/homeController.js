@@ -5,41 +5,49 @@ var bupc_imapControllers = angular.module("bupc_imap.Controllers", [
 'ngSanitize']);
 bupc_imapControllers.controller('bupc_imap_Controller', hello);
 
-// function hello($scope,piValue,ourPlanet,user,APP_NAME,APP_VERSION,API_URL, helloFactory, VAT, helloService)
 function hello($scope,$http,$timeout,APP_NAME,APP_VERSION,API_URL)
 {
 $scope.title = APP_NAME + " Version " + APP_VERSION;
 
-// MyApp.controller('HelloController', hello); uses the MyApp object that we defined in /app/app.js. 
-// This code calls the controller method and passes in two parameters. 
-// The name of the controller to be created HelloController and the function name hello that will be executed when the controller is executed.
-// function hello($scope){$scope.name = "Rodrick";} defines a function 
-// hello that accepts $scope object as a parameter. $scope is used to pass 
-// data between controllers and views. $name.scope = "Rodrick" assigns the value 
-// Rodrick to the name variable. This is the name that we are printing in the web browser.
 
-    // $scope.piValue = piValue;
-    // $scope.ourPlanet = ourPlanet;
-    // $scope.user = user;
+ $scope.sessionverify = function(){
+            $http.post('login/loginverify.php').then(function(data){
+                $scope.verify =JSON.parse(data.data);
+            if($scope.verify !== false){
+                
+                    if($scope.verify === "acc_temp"){
+                        $scope.tempadminaccess = 1;
+                        $scope.currentuser = "TEMPORARY";
+                    }else if($scope.verify === "acc_admin"){
+                        $scope.tempadminaccess = 1;
+                        $scope.adminaccess = 1;
+                        $scope.currentuser = "ADMINISTRATOR";
+                    }
+                    $scope.hasaccess = 1;
 
-    
-    // $scope.helloFactory = helloFactory;
+            }else{
+                $scope.currentuser = "Login";
+                $scope.tempadminaccess = 0;
+                $scope.adminaccess = 0;
+                $scope.hasaccess = 0;
+            }
 
-    // $scope.vat = VAT.compute(100);
-    // $scope.helloService = helloService.bite();
-    // $scope.helloServiceName = helloService.hello("JOBERT");
 
-    // // $scope.function
+            // console.log($scope.verify);
+         });
 
-    
-
- 
+        }
 
     load_init = function(){
         $scope.defaultView = 1;  // 1 = VIEW || 2 = ADD || 3 = EDIT 
         $scope.defaultADDInputCriteria = 0;
+        
+        $scope.sessionverify();
+        //CHECK IF SOMEONE IS LOGGED
 
+        
 
+        
         $http.post('handler/getAllEventHandler.php').then(function(data){
             $scope.event_data = data.data;
 
@@ -131,7 +139,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
 
       
-   console.log($scope.event_data);
+//    console.log($scope.event_data);
 
          });
 
@@ -457,6 +465,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         var modalparam = data;
         var modal_param = JSON.stringify(modalparam);
         
+        
             $http.post('handler/homeHandler.php', modal_param).then(function(data){
                 $scope.modal_info = data.data[0];
                 // console.log( $scope.modal_info);
@@ -548,6 +557,8 @@ $scope.eventController = function(param){
         $scope.defaultView = 1;
             $scope.defaultADDInputCriteria = 0;
     }else if(param == 2){ // SHOW ADD INTERFACE
+
+        
         $scope.defaultView = 2;
     }else if(param == 3){ // SHOW EDIT INTERFACE
         $scope.defaultView = 3;
@@ -837,9 +848,51 @@ $scope.saveEvent = function(name){
             }  
             ).setHeader('<em> Confirm! </em> ');
     }
+}
 
+$scope.submitLogIn = function(user, pass){
+   
+    var logparam = {
+        'user' : user,
+        'pass' : pass
+        };
 
- 
+            if((user == "" && pass == "" )||(user == undefined && pass == undefined) ){
+            }else{
+                var log_param = JSON.stringify(logparam);
+              
+                $http.post('handler/loginValidationHandler.php', log_param).then(function(data){
+                    $scope.login_information =JSON.parse(data.data);
+                    
+
+                if($scope.login_information == "false_user"){
+                    console.log("USER");
+                    alertify.alert("<p style='color:red;'>No Existing User!</p>").setHeader('<em> INVALID! </em> ');
+                }else if($scope.login_information == "false_pass"){
+                    console.log("PASS");
+                    alertify.alert("<p style='color:red;'>Incorrect Password!</p>").setHeader('<em> Alert! </em> '); 
+                }else{
+                     $scope.sessionverify();
+                    $('#accessModal').modal('toggle')
+                }
+
+                });
+              
+                
+            }
+
+  
+}
+
+$scope.submitLogOut = function(){
+   
+    $http.post('login/logout.php').then(function(data){
+     });
+
+     $scope.sessionverify();
+     $('#accessModal').modal('toggle')
+     angular.element('#usernameInput').val(undefined);
+     angular.element('#InputPassword').val(undefined);
   
 }
 
