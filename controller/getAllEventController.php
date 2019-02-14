@@ -11,7 +11,7 @@ class getAllEventController{
         /// xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   GET EVENT INFORMATION xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         
 
-        $all_statement_stmt =  $dbCon->prepare('SELECT * FROM events');
+        $all_statement_stmt =  $dbCon->prepare('SELECT * FROM events WHERE is_active = 1');
         $all_statement_stmt->execute();
         $all_statement_stmt_result = $all_statement_stmt->fetchAll(\PDO::FETCH_ASSOC);
 

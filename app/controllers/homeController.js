@@ -38,110 +38,17 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
         }
 
-    load_init = function(){
+    $scope.load_init = function(){
         $scope.defaultView = 1;  // 1 = VIEW || 2 = ADD || 3 = EDIT 
         $scope.defaultADDInputCriteria = 0;
-        
+        $scope.viewLiveEvents = 0;
+        $scope.viewLiveEventsMenu = "Free view";
         $scope.sessionverify();
         //CHECK IF SOMEONE IS LOGGED
 
         
 
-        
-        $http.post('handler/getAllEventHandler.php').then(function(data){
-            $scope.event_data = data.data;
-
-
-              angular.forEach($scope.event_data, function(value, key){
-                  var temp_counter =  value.sub_events.length;
-                value['sub_count'] = temp_counter;
-                angular.forEach(value.sub_events, function(value1, key1){
-                    
-                        var timestr1_1 = value1.sub_event_time_start;
-                        var timestr2_1 = value1.sub_event_time_end;
-
-                        var splitime1 = timestr1_1.split(":");
-                        var splitime2 = timestr2_1.split(":"); 
-                        
-                        var spl1ampm = timestr1_1 >= '12:00' ? 'pm' : 'am' 
-                        var spl2ampm = timestr2_1 >= '12:00' ? 'pm' : 'am' 
-
-                        //CHECK IF START TIME IS AM OR PM // Then Minus 12 if PM  
-                            if(spl1ampm == 'pm'){
-                                var startHour =  parseInt(splitime1[0]);
-                                var startMin =  parseInt(splitime1[1]);
-                                
-                                if(startHour == 12){
-                                    var finalStartTime = startHour + ":" + splitime1[1]  + " " + spl1ampm;
-                                }else{
-                                    var hourstart = startHour - 12;
-
-                                var finalStartTime = hourstart + ":" + splitime1[1]  + " " + spl1ampm;
-                                }
-                                
-
-
-                                
-                            }else{
-                                var startHour1 =  parseInt(splitime1[0]);
-                                var startMin1 =  parseInt(splitime1[1]);
-
-                                if(startHour1 == 00){
-
-                                    var hourstart1 = 12;
-                                    var finalStartTime = hourstart1 + ":" + splitime1[1]  + " " + spl1ampm;
-                                }else{
-                                    var finalStartTime = timestr1_1 + " " + spl1ampm;
-                                }
-                            }
-
-                        //CHECK IF END TIME IS AM OR PM // Then Minus 12 if PM  
-                        if(spl2ampm == 'pm'){
-                            var endHour =  parseInt(splitime2[0]);
-                            var endMin =  parseInt(splitime2[1]);
-
-                            if(endHour == 12){
-                                var finalEndTime = endHour + ":" + splitime2[1] + " " + spl2ampm;
-                            }else{
-                                var hourend =  endHour - 12;
-
-                                var finalEndTime = hourend + ":" + splitime1[1] + " " + spl2ampm;
-                            }
-                            
-                            
-
-                        }else{
-                                var endHour1 =  parseInt(splitime2[0]);
-                                var endMin1 =  parseInt(splitime2[1]);
-
-                                if(endHour1 == 00){
-
-                                    var hourend1 = 12;
-                                    var finalEndTime = hourend1 + ":" + splitime2[1]  + " " + spl2ampm;
-                                }else{
-                                    var finalEndTime = timestr2_1 + " " + spl2ampm;
-                                }
-
-
-
-
-                        }
-                        value1['sub_show_start_time'] = finalStartTime;
-                        value1['sub_show_end_time'] = finalEndTime;
-                    
-                });  
-    
-
-            });  
-
-         
-
-
-
-      
-//    console.log($scope.event_data);
-
-         });
+       
 
         $http.post('handler/getAllInfoHandler.php').then(function(data){
             $scope.building_data = data.data;
@@ -414,10 +321,10 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
             //     var rrr = e.latlng
                 
             //   $scope.savers = "[" + rrr.lat + ", " + rrr.lng + "]";
-            //   alertify.alert($scope.savers);
+            //   console.log($scope.savers);
             // //   $scope.mapmapparam();
             // }
-
+            // map.on('click', onMapClick);
 
 
 ////////////////////////////////// MARKERS ////////////////////
@@ -431,6 +338,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
             map.removeControl(marker); // remove
         }
 
+        console.log($scope.modal_info.rooms);
         angular.forEach($scope.modal_info.rooms, function(value, key){
             if(value.room_name === data){
                 $('#info_modal').modal('toggle')
@@ -443,9 +351,382 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                 {title: data}
                                 )
                .addTo(map);
+               marker.bindPopup('<b>"' + value["room_name"] + '"</b>' ).openPopup();
             }
         });   
     }
+    var polygon;
+    $scope.sub_event_clicked = function(place, data_info){
+        // console.log(place);
+        if(marker){
+            map.removeLayer(marker); // remove
+            map.removeControl(marker); // remove
+        }
+  
+
+        var building_id = data_info['building_id'];
+        var room_id = data_info['room_id'];
+
+
+        // console.log($scope.building_data);
+        if(data_info['room_id'] == null){
+            angular.forEach($scope.building_data, function(value, key){
+                if(value['id'] === building_id){
+                    $scope.marker_coor = value['coordinates_specific'];
+
+                        $('#eventsModal').modal('toggle')
+               
+                        var temp =  $scope.marker_coor;
+                        var result = temp.slice(1,-1);
+                        var coordinates = result.split(",");
+        
+                         marker = L.marker(coordinates,
+                                        {title: data}
+                                        )
+                       .addTo(map);
+
+                       
+                       marker.bindPopup('<b>"' + data_info["sub_event_name"] + '"</b>' + '<br>' +
+                                        "<b style='color:red !important;'>" + data_info['sub_show_start_time'] + " - " + data_info  ['sub_show_end_time'] + "</b>" ).openPopup();
+                   
+                     $('#eventsModal').modal('toggle')
+
+                }else{
+    
+                }
+            });  
+
+        }else{
+        angular.forEach($scope.building_data, function(value, key){
+            if(value['id'] === building_id){
+                angular.forEach(value['rooms'], function(value1, key1){
+                    if(value1['id'] === room_id){
+                        $scope.marker_coor = value1['coordinates'];
+
+                        $('#eventsModal').modal('toggle')
+               
+                        var temp =  $scope.marker_coor;
+                        var result = temp.slice(1,-1);
+                        var coordinates = result.split(",");
+        
+                         marker = L.marker(coordinates,
+                                        {title: data}
+                                        )
+                       .addTo(map);
+
+                       
+                       marker.bindPopup('<b>"' + data_info["sub_event_name"] + '"</b>' + '<br>' +
+                                        "<b style='color:red !important;'>" + data_info['sub_show_start_time'] + " - " + data_info  ['sub_show_end_time'] + "</b>" ).openPopup();
+                    }else{
+
+                    }
+                });   
+            }else{
+
+            }
+        });  
+
+    }
+
+
+        // angular.forEach($scope.modal_info.rooms, function(value, key){
+        //     if(value.room_name === data){
+        //         $('#info_modal').modal('toggle')
+               
+        //         var temp = value.coordinates;
+        //         var result = temp.slice(1,-1);
+        //         var coordinates = result.split(",");
+
+        //          marker = L.marker(coordinates,
+        //                         {title: data}
+        //                         )
+        //        .addTo(map);
+        //     }
+        // });   
+    }
+
+    $scope.RealTimeEventChecker = function(){
+        var today = new Date();
+        var date = today.getFullYear()+'-0'+(today.getMonth()+1)+'-'+today.getDate();
+        var real_hour = today.getHours();
+        var real_min  = today.getMinutes();
+        var real_sec  = today.getSeconds();
+    
+       
+
+        angular.forEach($scope.temp_event_data, function(value, key){
+    
+             
+    
+                    //AUTO REMOVE EVENT
+                     var realdate = date.split("-");   //SPLIT Date for comparing
+                     var savedate = value['event_date'].split("-");
+                    //  console.log(realdate);
+                    //  console.log(savedate);
+    
+                     var real_year  = parseInt(realdate[0]);
+                     var real_month = parseInt(realdate[1]);
+                     var real_day   = parseInt(realdate[2]);
+    
+                     var save_year  = parseInt(savedate[0]);
+                     var save_month = parseInt(savedate[1]);
+                     var save_day   = parseInt(savedate[2]);
+    
+                     if(save_year < real_year){
+                        // console.log("PAST YEAR");
+                        // console.log(value['id'] + " " + value['event_name']);
+                        value['is_active'] = "0";
+                        // $scope.PastEventsRemover(value['id']);
+                     }else{
+                        if(save_month < real_month){
+                            // console.log("PAST MONTH");
+                            // console.log(value['id'] + " " + value['event_name']);
+                            value['is_active'] = "0";
+                            // $scope.PastEventsRemover(value['id']);
+                        }else{
+                            if(save_day < real_day){
+                                // console.log("PAST DAY");
+                                // console.log(value['id'] + " " + value['event_name']);
+                                value['is_active'] = "0";
+                                // $scope.PastEventsRemover(value['id']);
+                            }else{
+                                // console.log(value.sub_events);
+                               if($scope.viewLiveEvents === 1){
+                                    // if(marker){
+                                    //     map.removeLayer(marker); // remove
+                                    //     map.removeControl(marker); // remove
+                                    // }
+
+                                    angular.forEach(value.sub_events, function(value1, key1){
+                                    var save_start = value1['sub_event_time_start'].split(":");
+                                    var save_end   = value1['sub_event_time_end'].split(":");
+    
+                                    var save_start_hour  =  parseFloat(save_start[0] + "." + save_start[1]);
+                                    var save_end_hour    =  parseFloat(save_end[0] + "." + save_end[1]);
+                                    var real_curr_hour   =  parseFloat(real_hour + "." + real_min);
+                                    // var save_start_min  =  parseInt(save_start[1]);
+                                    // var save_end_min    =  parseInt(save_end[1]);
+                                    
+                                   
+                                    // console.log(value1['sub_event_name']);
+                                    if(real_curr_hour >= save_start_hour && real_curr_hour <= save_end_hour){
+                                        // console.log("SHOW MARKER");
+
+                    /////////////////////////////////////////////////////////////////////////////////
+                                     
+                                        angular.forEach($scope.building_data, function(value2, key2){
+                                            console.log(real_curr_hour + " > " + save_start_hour +" " + save_end_hour);
+                                            if(value2['id'] === value1['building_id']){
+                                               if(value1['room_id'] == null){ 
+                                                    $scope.marker_coor = value2['coordinates_specific'];
+                                                
+                                                    var temp =  $scope.marker_coor;
+                                                    var result = temp.slice(1,-1);
+                                                    var coordinates = result.split(",");
+                                    
+                                                    marker = L.marker(coordinates
+                                                                    )
+                                                .addTo(map);
+                            
+                                                
+                                                marker.bindPopup('<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
+                                                                    "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>" ).openPopup();
+
+
+                                               }else{angular.forEach(value2['rooms'], function(value3, key3){
+                                                    if(value3['id'] === value1['room_id']){
+                                                        $scope.marker_coor = value3['coordinates'];
+                                               
+                                                        var temp =  $scope.marker_coor;
+                                                        var result = temp.slice(1,-1);
+                                                        var coordinates = result.split(",");
+                                        
+                                                         marker = L.marker(coordinates
+                                                                        )
+                                                       .addTo(map);
+                                
+                                                       
+                                                       marker.bindPopup('<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
+                                                                        "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>" ).openPopup();
+                                                    }else{
+                                
+                                                    }
+                                                });  
+                                            }
+                                            }else{
+                                
+                                            }
+                                        });  
+                        /////////////////////////////////////////////////////////////////////////////////
+                                    }else if(real_hour < save_start_hour){
+                                        // console.log("MARKER COMING SOON");
+                                    }else if(real_hour > save_end_hour){
+                                        // console.log("MARKER IS PAST THE HOUR");
+                                    }
+                                }); 
+    
+                               //GET COORDINATES
+                               //PUT ALL MARKERS WITH ACTIVE
+                            }else{
+
+                            }
+           
+                            }
+       
+                        }
+                     }
+    
+                    //  $scope.event_data.push($scope.temp_event_data[key]);
+    
+    
+    
+                
+        });  
+        $scope.event_data = [];
+        angular.forEach($scope.temp_event_data, function(value, key){
+            if(value['is_active'] === '1'){
+                $scope.event_data.push($scope.temp_event_data[key]);
+            }else{
+    
+            }
+    }); 
+    
+    
+    }
+
+    $scope.viewActiveEvents = function(){
+        
+        if($scope.viewLiveEvents === 0){
+          
+        alertify.confirm('Do you want to View active Events? <b>" <br>' + 
+                            '<small style="color:red;">*Viewing active events will turn-off FREE VIEWING</small>',
+                function(){
+                    $scope.viewLiveEvents = 1;
+                    $scope.viewLiveEventsMenu = "Real Time View";
+                    alertify.success('REAL TIME EVENTS ACTIVE!');
+                },
+                function(){
+                    $scope.viewLiveEvents = 0;
+                    $scope.viewLiveEventsMenu = "Free View";
+                    alertify.error('REAL TIME VIEWING CANCELLED');
+                }  
+                ).setHeader('<em> Alert! </em> ');
+      }else{
+        if(marker){
+            map.removeLayer(marker); // remove
+            map.removeControl(marker); // remove
+        }
+        alertify.confirm('Do you want to go to back to Free Viewing? <b>" <br>' + 
+        '<small style="color:red;">*REAL TIME EVENTS feature will be deactivated</small>',
+            function(){
+                $scope.viewLiveEvents = 0;
+                $scope.viewLiveEventsMenu = "Free View";
+                alertify.success('FREE VIEW ACTIVATED!');
+            },
+            function(){
+                $scope.viewLiveEvents = 1;
+                $scope.viewLiveEventsMenu = "Real Time View";
+                alertify.error('FREE VIEW CANCELLED');
+            }  
+            ).setHeader('<em> Alert! </em> ');
+      }
+    }
+
+     
+    $http.post('handler/getAllEventHandler.php').then(function(data){
+        $scope.temp_event_data = data.data;
+
+
+          angular.forEach($scope.temp_event_data, function(value, key){
+              var temp_counter =  value.sub_events.length;
+            value['sub_count'] = temp_counter;
+            angular.forEach(value.sub_events, function(value1, key1){
+                
+                    var timestr1_1 = value1.sub_event_time_start;
+                    var timestr2_1 = value1.sub_event_time_end;
+
+                    var splitime1 = timestr1_1.split(":");
+                    var splitime2 = timestr2_1.split(":"); 
+                    
+                    var spl1ampm = timestr1_1 >= '12:00' ? 'pm' : 'am' 
+                    var spl2ampm = timestr2_1 >= '12:00' ? 'pm' : 'am' 
+
+                    //CHECK IF START TIME IS AM OR PM // Then Minus 12 if PM  
+                        if(spl1ampm == 'pm'){
+                            var startHour =  parseInt(splitime1[0]);
+                            var startMin =  parseInt(splitime1[1]);
+                            
+                            if(startHour == 12){
+                                var finalStartTime = startHour + ":" + splitime1[1]  + " " + spl1ampm;
+                            }else{
+                                var hourstart = startHour - 12;
+
+                            var finalStartTime = hourstart + ":" + splitime1[1]  + " " + spl1ampm;
+                            }
+                            
+
+
+                            
+                        }else{
+                            var startHour1 =  parseInt(splitime1[0]);
+                            var startMin1 =  parseInt(splitime1[1]);
+
+                            if(startHour1 == 00){
+
+                                var hourstart1 = 12;
+                                var finalStartTime = hourstart1 + ":" + splitime1[1]  + " " + spl1ampm;
+                            }else{
+                                var finalStartTime = timestr1_1 + " " + spl1ampm;
+                            }
+                        }
+
+                    //CHECK IF END TIME IS AM OR PM // Then Minus 12 if PM  
+                    if(spl2ampm == 'pm'){
+                        var endHour =  parseInt(splitime2[0]);
+                        var endMin =  parseInt(splitime2[1]);
+
+                        if(endHour == 12){
+                            var finalEndTime = endHour + ":" + splitime2[1] + " " + spl2ampm;
+                        }else{
+                            var hourend =  endHour - 12;
+
+                            var finalEndTime = hourend + ":" + splitime1[1] + " " + spl2ampm;
+                        }
+                        
+                        
+
+                    }else{
+                            var endHour1 =  parseInt(splitime2[0]);
+                            var endMin1 =  parseInt(splitime2[1]);
+
+                            if(endHour1 == 00){
+
+                                var hourend1 = 12;
+                                var finalEndTime = hourend1 + ":" + splitime2[1]  + " " + spl2ampm;
+                            }else{
+                                var finalEndTime = timestr2_1 + " " + spl2ampm;
+                            }
+
+
+
+
+                    }
+                    value1['sub_show_start_time'] = finalStartTime;
+                    value1['sub_show_end_time'] = finalEndTime;
+                
+            });  
+
+
+        });  
+
+     
+
+
+        $scope.RealTimeEventChecker($scope.temp_event_data);
+  
+//    console.log($scope.event_data);
+
+     });
            
     $scope.ClickHandler = function(data){
         var data = $scope.building_code;
@@ -500,7 +781,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         });
         $('#info_modal').modal('toggle')
     }
-           // map.on('click', onMapClick);
+          
             
    });
     }
@@ -536,10 +817,25 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
     $scope.intervalFunction = function(){
         $timeout(function() {
             $scope.DateTime();
-          $scope.intervalFunction();
+            $scope.intervalFunction();
+            $scope.RealTimeEventChecker();
         }, 1000)
       };
 false
+
+
+
+$scope.PastEventsRemover = function(id){
+
+  
+        $scope.past_id = JSON.stringify(id);
+                
+        $http.post('handler/removeEventHandler.php', $scope.past_id).then(function(data){
+            // $scope.PMCTQ_unit = unittemp;
+        });
+ 
+}
+
 
 init = function(){
 
@@ -821,6 +1117,8 @@ $scope.removeSubEvent = function(id, name){
 }
 
 
+
+
 $scope.saveEvent = function(name){
     console.log($scope.EventHoldertemp);
     console.log($scope.EventHoldertemp.sub_specification);
@@ -841,7 +1139,8 @@ $scope.saveEvent = function(name){
                     });
 
                 alertify.success('Saved Succesfully');
-                $('#myModal').modal('toggle')
+                $('#eventsModal').modal('toggle')
+                window.location.reload();
             },
             function(){
                 alertify.error('Save Cancelled');
@@ -896,6 +1195,7 @@ $scope.submitLogOut = function(){
   
 }
 
+ 
 
 
 
@@ -926,8 +1226,9 @@ $scope.submitLogOut = function(){
     //     $scope.DateTime();
     //     }, 5000);  //Delay here = 5 seconds 
     //    });
-    load_init();
+    $scope.load_init();
    
     $scope.intervalFunction();
     init();
+    
 }

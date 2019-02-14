@@ -94,7 +94,7 @@
                 <a class="nav-link" href="#"  data-toggle="modal" data-target=".eventsModal" >Events</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" ng-click="viewActiveEvents()" href="#">{{viewLiveEventsMenu}}</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#"  data-toggle="modal" data-target="#accessModal"><h5>{{currentuser}}</h5></a>
@@ -150,7 +150,7 @@
       <!-- Large modal -->
         <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".eventsModal">Large modal</button> -->
 
-        <div class="modal fade eventsModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal fade eventsModal" id="eventsModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
@@ -194,7 +194,7 @@
                                   
                                   <!-- SUB EVENT VIEW -->
                                    <div class="accordion" id="accordionEvent1" ng-repeat="(key1, value1) in value.sub_events track by $index">
-                                        <div class="card bg-light" style="color:black !important;">
+                                        <div class="card bg-light" style="color:black !important; border-radius:3px 3px 3px 3px !important;">
                                           <div class="card-header collapsed" id="sub_event_modal_head_{{key1}}" data-toggle="collapse" data-target="#sub_event_modal_id_{{key1}}" aria-expanded="true" aria-controls="sub_event_modal_id_{{key1}}">
 
                                           <div class="row">
@@ -208,21 +208,19 @@
 
                                                             
                                           </div>
-                                                <div id="sub_event_modal_id_{{key1}}" class="collapse" aria-labelledby="sub_event_modal_head_{{key1}}" data-parent="#accordionEvent1">
-                                                  <div class="card-body">
-                                                    <div class="row">
+                                                <div id="sub_event_modal_id_{{key1}}"  class="collapse" aria-labelledby="sub_event_modal_head_{{key1}}" data-parent="#accordionEvent1">
+                                                  <div class="card-body" >
+                                                    <div class="row" style="border:1px solid green; border-radius:7px 7px 7px 7px !important; background-color:  rgb(175, 255, 180) !important;">
                                                       <div class="col-lg-12 text-center">
                                                         <h6><strong>"{{value1.sub_event_desc}}"</strong></h6>
                                                       </div>
                                                     </div>
                                                     <div class="row">
-                                                      <div class="col-lg-5 text-center" style>
+                                                      <div class="col-lg-12 text-center" style>
                                                     
-                                                        <h6><span class="badge badge-warning">Host: {{value1.sub_event_hosted_by}}</span></h6> 
+                                                        <h6><span class="badge badge-warning">Host: {{value1.sub_event_hosted_by}}</span> <a class="badge badge-info" ng-click="sub_event_clicked(value1.sub_event_hosted_at, value1)" >@ {{value1.sub_event_hosted_at}}</a></h6> 
                                                       </div>
-                                                      <div class="col-lg-7 text-center">
-                                                        <h6><span class="badge badge-warning">@ {{value1.sub_event_hosted_at}}</span></h6> 
-                                                      </div>
+                                                    
                                                     </div>
 
 
