@@ -67,7 +67,9 @@
   font-style:italic;
 }
 
-
+.leaflet-popup-content-wrapper, .leaflet-popup-tip{
+box-shadow: none;
+}
 
 .super_light_green{
   background-color: #acffae !important;

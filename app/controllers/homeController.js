@@ -329,6 +329,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
 ////////////////////////////////// MARKERS ////////////////////
            var marker;
+           
         
     $scope.room_name_clicked = function(data){
         console.log(data);
@@ -444,7 +445,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         //     }
         // });   
     }
-
+    mapMarkers= [];
     $scope.RealTimeEventChecker = function(){
         var today = new Date();
         var date = today.getFullYear()+'-0'+(today.getMonth()+1)+'-'+today.getDate();
@@ -452,11 +453,23 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         var real_min  = today.getMinutes();
         var real_sec  = today.getSeconds();
     
-       
+     
+        if(marker){
+            map.removeLayer(marker); // remove
+            map.removeControl(marker); // remove
+            map.removeLayer(marker); // remove
+            map.removeControl(marker); // remove
+            for(var i = 0; i < mapMarkers.length; i++){
+                map.removeLayer(mapMarkers[i]);
+            }
+        }
+        
 
         angular.forEach($scope.temp_event_data, function(value, key){
-    
-             
+
+             if(value['is_active'] == "0"){
+
+             }else{
     
                     //AUTO REMOVE EVENT
                      var realdate = date.split("-");   //SPLIT Date for comparing
@@ -498,12 +511,15 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                     // }
 
                                     angular.forEach(value.sub_events, function(value1, key1){
+
+                                        if(value1['is_active'] == "0"){}else{
                                     var save_start = value1['sub_event_time_start'].split(":");
                                     var save_end   = value1['sub_event_time_end'].split(":");
     
                                     var save_start_hour  =  parseFloat(save_start[0] + "." + save_start[1]);
                                     var save_end_hour    =  parseFloat(save_end[0] + "." + save_end[1]);
                                     var real_curr_hour   =  parseFloat(real_hour + "." + real_min);
+                                   
                                     // var save_start_min  =  parseInt(save_start[1]);
                                     // var save_end_min    =  parseInt(save_end[1]);
                                     
@@ -511,13 +527,14 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                     // console.log(value1['sub_event_name']);
                                     if(real_curr_hour >= save_start_hour && real_curr_hour <= save_end_hour){
                                         // console.log("SHOW MARKER");
-
+                                        // console.log( value1["sub_event_name"] + ": " + save_start_hour + " >= " + real_curr_hour +" <= " + save_end_hour);
                     /////////////////////////////////////////////////////////////////////////////////
                                      
                                         angular.forEach($scope.building_data, function(value2, key2){
-                                            console.log(real_curr_hour + " > " + save_start_hour +" " + save_end_hour);
+                                           
+                                            // console.log(real_curr_hour + " > " + save_start_hour +" " + save_end_hour);
                                             if(value2['id'] === value1['building_id']){
-                                               if(value1['room_id'] == null){ 
+                                               if(value1['room_id'] == null){
                                                     $scope.marker_coor = value2['coordinates_specific'];
                                                 
                                                     var temp =  $scope.marker_coor;
@@ -527,13 +544,15 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                                     marker = L.marker(coordinates
                                                                     )
                                                 .addTo(map);
-                            
-                                                
+                                                // {closeOnClick: false, autoClose: false});
+                                                console.log(value1["sub_event_desc"]+ " " + value1['sub_show_start_time']+"-"+ value1['sub_show_end_time']);
                                                 marker.bindPopup('<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
-                                                                    "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>" ).openPopup();
-
-
-                                               }else{angular.forEach(value2['rooms'], function(value3, key3){
+                                                                    // "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>" ).openPopup();
+                                                                    "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>",{closeOnClick: false, autoClose: false}).openPopup();
+                                                mapMarkers.push(marker);
+                                               }else if (value1['room_id'] !== null){
+                                                   
+                                                   angular.forEach(value2['rooms'], function(value3, key3){
                                                     if(value3['id'] === value1['room_id']){
                                                         $scope.marker_coor = value3['coordinates'];
                                                
@@ -545,50 +564,44 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                                                         )
                                                        .addTo(map);
                                 
-                                                       
+                                                       console.log(value1["sub_event_desc"]+ " " + value1['sub_show_start_time']+"-"+ value1['sub_show_end_time']);
                                                        marker.bindPopup('<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
-                                                                        "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>" ).openPopup();
-                                                    }else{
-                                
-                                                    }
+                                                                        // "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>" ).openPopup();
+                                                                        "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>",{closeOnClick: false, autoClose: false}).openPopup();
+                                                mapMarkers.push(marker);
+                                                    }else{}
                                                 });  
                                             }
-                                            }else{
-                                
-                                            }
-                                        });  
+                                        }else{}
+                                    });  
                         /////////////////////////////////////////////////////////////////////////////////
-                                    }else if(real_hour < save_start_hour){
+                                    }else if(real_curr_hour < save_start_hour){
+                                        // console.log( value1["sub_event_name"] + ": " + real_curr_hour + " < " + save_start_hour);
                                         // console.log("MARKER COMING SOON");
-                                    }else if(real_hour > save_end_hour){
+                                    }else if(real_curr_hour > save_end_hour){
+                                        // console.log( value1["sub_event_name"] + ": " + real_curr_hour + " < " + save_start_hour);
                                         // console.log("MARKER IS PAST THE HOUR");
+                                        value1['is_active'] = "0";
+                                        
                                     }
+                                }
                                 }); 
     
                                //GET COORDINATES
                                //PUT ALL MARKERS WITH ACTIVE
-                            }else{
-
-                            }
-           
-                            }
-       
+                            }else{}
                         }
-                     }
-    
+                    }
+                }
                     //  $scope.event_data.push($scope.temp_event_data[key]);
-    
-    
-    
-                
+            }       
         });  
+        
         $scope.event_data = [];
         angular.forEach($scope.temp_event_data, function(value, key){
             if(value['is_active'] === '1'){
                 $scope.event_data.push($scope.temp_event_data[key]);
-            }else{
-    
-            }
+            }else{}
     }); 
     
     
@@ -690,7 +703,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                         }else{
                             var hourend =  endHour - 12;
 
-                            var finalEndTime = hourend + ":" + splitime1[1] + " " + spl2ampm;
+                            var finalEndTime = hourend + ":" + splitime2[1] + " " + spl2ampm;
                         }
                         
                         
@@ -706,10 +719,6 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                             }else{
                                 var finalEndTime = timestr2_1 + " " + spl2ampm;
                             }
-
-
-
-
                     }
                     value1['sub_show_start_time'] = finalStartTime;
                     value1['sub_show_end_time'] = finalEndTime;
@@ -818,7 +827,12 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         $timeout(function() {
             $scope.DateTime();
             $scope.intervalFunction();
-            $scope.RealTimeEventChecker();
+            if($scope.viewLiveEvents == 0){
+
+            }else{
+                 $scope.RealTimeEventChecker();
+            }
+           
         }, 1000)
       };
 false
