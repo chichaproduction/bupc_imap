@@ -4,20 +4,30 @@ if (isset($_SESSION['user'])) {
     // logged in
 
         
-  if($_SESSION['user'] === "administrator"){
-    $user = "acc_admin";
-  }else if($_SESSION['user'] === "temporary"){
-    $user = "acc_temp";
+  if($_SESSION['user']){
+    $user = $_SESSION['user'];
+    $access = $_SESSION['access'];
+
+    $user_acess = [
+      'user'  => $user,
+      'access' => $access
+  ];
   }else{
-    $user = false;
+    $user_acess = [
+      'user'  => false,
+      'access' => false
+  ];
   }
 
-    $returnUser = json_encode($user);
+    $returnUser = json_encode($user_acess);
         echo $returnUser;
   } else {
     // not logged in
-    $user = false;
-    $returnUser = json_encode($user);
+    $user_acess = [
+      'user'  => false,
+      'access' => false
+  ];
+    $returnUser = json_encode($user_acess);
         echo $returnUser;
   }
 

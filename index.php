@@ -448,14 +448,79 @@
                                         <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="saveEvent(EventHoldertemp.event_name)">SAVE EVENT</button>
                                         </div>
                                       </div>
-                          
-                </div>
+
+
+
+   <!-- VIEW Event -->
+   <div class="card" ng-show="defaultView == 4" >
+              <div class="card-body ">
+                  <h4 class="text-center">Account Management<h4>
+                  <h6><p style="border:1px solid red; padding:10px;">Note: <br> 
+                      
+                      1. Username for each account will be unified, and is unchangeable.<br><br>
+                      2. Regenerating the temporary account means changing the Password, thus users given of the password, will not be able to access upon a new generation of password for the specific temporary account.<br><br>
+                      3. The feature will generate a random password for each account, which is recommended to be frequently change, for security purposes.<br>
+                  </p></h6>
+
+                  <!-- TEMPORARY ACCOUNT -->
+                  <div class="card text-white bg-danger mb-3">
+                    <div class="card-header">ADMIN Account</div>
+                      <div class="card-body">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>id</th>
+                              <th>Username</th>
+                              <th>Password</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>administrator</td>
+                              <td>admin_master_account</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                      <!-- TEMPORARY ACCOUNT -->
+                  <div class="card text-white bg-secondary mb-3">
+                    <div class="card-header">Temporary Accounts</div>
+                      <div class="card-body">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>id</th>
+                              <th>Username</th>
+                              <th>Password</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="(key, value) in user_data.temp track by $index">
+                              <td>{{$index}}</td>
+                              <td>{{value.username}}</td>
+                              <td>{{value.pass_temp}}</td>
+                              <td>
+                              <button type="button" class="btn btn-success" ng-click="generatePassword(value.id)">Regenerate Password</button>
+                                
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+            </div>         
+        </div>
 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-primary" ng-click="eventController(1)">View Event</button>
                   <button ng-show="tempadminaccess == 1" type="button" class="btn btn-success" ng-click="eventController(2)">Add Event</button>
                   <button ng-show="adminaccess == 1" type="button" class="btn btn-warning" ng-click="eventController(3)">Edit Event</button>
-                  <button ng-show="adminaccess == 1" type="button" class="btn btn-danger"   ng-click="eventController(4)">Generate Temporary Account</button>
+                  <button ng-show="adminaccess == 1" type="button" class="btn btn-danger"   ng-click="eventController(4)">Temporary Account Management</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
 

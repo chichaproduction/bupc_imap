@@ -12,24 +12,25 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
  $scope.sessionverify = function(){
             $http.post('login/loginverify.php').then(function(data){
-                $scope.verify =JSON.parse(data.data);
-            if($scope.verify !== false){
                 
-                    if($scope.verify === "acc_temp"){
-                        $scope.tempadminaccess = 1;
-                        $scope.currentuser = "TEMPORARY";
-                    }else if($scope.verify === "acc_admin"){
-                        $scope.tempadminaccess = 1;
-                        $scope.adminaccess = 1;
-                        $scope.currentuser = "ADMINISTRATOR";
-                    }
-                    $scope.hasaccess = 1;
-
-            }else{
+                $scope.verify =data.data;
+            if($scope.verify['user'] === false){
                 $scope.currentuser = "Login";
                 $scope.tempadminaccess = 0;
                 $scope.adminaccess = 0;
                 $scope.hasaccess = 0;
+            }else{
+                $temp_access = parseInt($scope.verify['access']);
+             
+                if($temp_access == 0){
+                    $scope.tempadminaccess = 1;
+                    $scope.currentuser = "TEMPORARY";
+                }else if($temp_access == 1){
+                    $scope.tempadminaccess = 1;
+                    $scope.adminaccess = 1;
+                    $scope.currentuser = "ADMINISTRATOR";
+                }
+                $scope.hasaccess = 1;
             }
 
 
@@ -44,6 +45,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         $scope.viewLiveEvents = 0;
         $scope.viewLiveEventsMenu = "Free view";
         $scope.sessionverify();
+        $scope.getAllUsers();
         //CHECK IF SOMEONE IS LOGGED
 
         
@@ -446,6 +448,63 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         // });   
     }
     mapMarkers= [];
+
+    $scope.RealTimeEventCheckerStatic = function(){
+        var today = new Date();
+        var date = today.getFullYear()+'-0'+(today.getMonth()+1)+'-'+today.getDate();
+        var real_hour = today.getHours();
+        var real_min  = today.getMinutes();
+        var real_sec  = today.getSeconds();
+
+        angular.forEach($scope.temp_event_data, function(value, key){
+                    //AUTO REMOVE EVENT
+                     var realdate = date.split("-");   //SPLIT Date for comparing
+                     var savedate = value['event_date'].split("-");
+                     var real_year  = parseInt(realdate[0]);
+                     var real_month = parseInt(realdate[1]);
+                     var real_day   = parseInt(realdate[2]);
+    
+                     var save_year  = parseInt(savedate[0]);
+                     var save_month = parseInt(savedate[1]);
+                     var save_day   = parseInt(savedate[2]);
+    
+                     if(save_year < real_year){
+                        $scope.PastEventsRemover(value['id']);
+                     }else{
+                        if(save_month < real_month){
+                            $scope.PastEventsRemover(value['id']);
+                        }else{
+                            if(save_day < real_day){
+                                $scope.PastEventsRemover(value['id']);
+                            }else{
+                                angular.forEach(value.sub_events, function(value1, key1){
+
+                                    var save_start = value1['sub_event_time_start'].split(":");
+                                    var save_end   = value1['sub_event_time_end'].split(":");
+
+                                    var save_start_hour  =  parseFloat(save_start[0] + "." + save_start[1]);
+                                    var save_end_hour    =  parseFloat(save_end[0] + "." + save_end[1]);
+                                    var real_curr_hour   =  parseFloat(real_hour + "." + real_min);
+                                    
+                                    if(real_curr_hour >= save_start_hour && real_curr_hour <= save_end_hour){
+                                        //SUB_EVENT_IN_TIME
+                                    }else if(real_curr_hour < save_start_hour){
+                                        //SUB_EVENT_COMING_SOON
+                                    }else if(real_curr_hour > save_end_hour){
+                                        //SUB_EVENT_PAST_HOUR
+                                        $scope.PastSubEventsRemover(value['id']);
+                                    }
+                                    });
+                                }
+                            }
+                            }
+        });  
+        
+    
+    
+    }
+
+
     $scope.RealTimeEventChecker = function(){
         var today = new Date();
         var date = today.getFullYear()+'-0'+(today.getMonth()+1)+'-'+today.getDate();
@@ -625,15 +684,15 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                 }  
                 ).setHeader('<em> Alert! </em> ');
       }else{
-        if(marker){
-            map.removeLayer(marker); // remove
-            map.removeControl(marker); // remove
-        }
         alertify.confirm('Do you want to go to back to Free Viewing? <b>" <br>' + 
         '<small style="color:red;">*REAL TIME EVENTS feature will be deactivated</small>',
             function(){
                 $scope.viewLiveEvents = 0;
                 $scope.viewLiveEventsMenu = "Free View";
+                if(marker){
+                    map.removeLayer(marker); // remove
+                    map.removeControl(marker); // remove
+                }
                 alertify.success('FREE VIEW ACTIVATED!');
             },
             function(){
@@ -730,7 +789,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
      
 
-
+        $scope.RealTimeEventCheckerStatic($scope.temp_event_data);
         $scope.RealTimeEventChecker($scope.temp_event_data);
   
 //    console.log($scope.event_data);
@@ -849,6 +908,16 @@ $scope.PastEventsRemover = function(id){
         });
  
 }
+$scope.PastSubEventsRemover = function(id){
+
+  
+    $scope.past_id = JSON.stringify(id);
+            
+    $http.post('handler/removeSubEventHandler.php', $scope.past_id).then(function(data){
+        // $scope.PMCTQ_unit = unittemp;
+    });
+
+}
 
 
 init = function(){
@@ -873,7 +942,7 @@ $scope.eventController = function(param){
     }else if(param == 3){ // SHOW EDIT INTERFACE
         $scope.defaultView = 3;
             $scope.defaultADDInputCriteria = 0;
-    }else if(param == 4){ // SHOW REMOVE INTERFACE
+    }else if(param == 4){ // SHOW Generate Temp Account
         $scope.defaultView = 4;
             $scope.defaultADDInputCriteria = 0;
     }
@@ -1197,6 +1266,39 @@ $scope.submitLogIn = function(user, pass){
   
 }
 
+$scope.getAllUsers = function(){
+    $http.post('handler/getAllUsersHandler.php').then(function(data){
+        $scope.user_data =data.data;
+
+
+    });
+
+}
+
+$scope.generatePassword = function(id){
+
+    // console.log(id);
+     angular.forEach($scope.user_data, function(value, key){
+         angular.forEach(value, function(value1, key1){
+             if(value1['id'] == id){
+                 
+                  value1['pass_temp'] = Math.random().toString(36).substr(2, 10);
+                  var userparam = {
+                    'id' : id,
+                    'pass' : value1['pass_temp']
+                    };
+                  $http.post('handler/insertTempPassHandler.php', userparam).then(function(data){
+
+                    });
+
+             }else{}
+       
+        });  
+    });  
+    
+}
+
+
 $scope.submitLogOut = function(){
    
     $http.post('login/logout.php').then(function(data){
@@ -1240,6 +1342,8 @@ $scope.submitLogOut = function(){
     //     $scope.DateTime();
     //     }, 5000);  //Delay here = 5 seconds 
     //    });
+    
+
     $scope.load_init();
    
     $scope.intervalFunction();
