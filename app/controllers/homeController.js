@@ -10,6 +10,15 @@ function hello($scope,$http,$timeout,APP_NAME,APP_VERSION,API_URL)
 $scope.title = APP_NAME + " Version " + APP_VERSION;
 
 
+// var sagot = distance('JOEL', 'JOELA');
+// // 0.961
+// // console.log(sagot * 100);
+// // console.log("HELLO THERE");
+// $scope.sessionverify = function(){
+
+
+// }
+
  $scope.sessionverify = function(){
             $http.post('login/loginverify.php').then(function(data){
                 
@@ -34,7 +43,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
             }
 
 
-            // console.log($scope.verify);
+            // // console.log($scope.verify);
          });
 
         }
@@ -58,13 +67,15 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
             // $scope.addBuilding = [];
             // angular.forEach($scope.building_data, function(value, key){
-            //     console.log(value.building_name);
+            // //     console.log(value.building_name);
             //     $scope.addBuilding.push(value['building_name']);
             // });  
 
-            // console.log($scope.addBuilding);
+            // // console.log($scope.addBuilding);
 
          });
+
+      
 
         $http.post('handler/getDetailsHandler.php').then(function(data){
             $scope.building_info = data.data;
@@ -323,7 +334,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
             //     var rrr = e.latlng
                 
             //   $scope.savers = "[" + rrr.lat + ", " + rrr.lng + "]";
-            //   console.log($scope.savers);
+            // //   console.log($scope.savers);
             // //   $scope.mapmapparam();
             // }
             // map.on('click', onMapClick);
@@ -334,14 +345,14 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
            
         
     $scope.room_name_clicked = function(data){
-        console.log(data);
+        // console.log(data);
 
         if(marker){
             map.removeLayer(marker); // remove
             map.removeControl(marker); // remove
         }
 
-        console.log($scope.modal_info.rooms);
+        // // console.log($scope.modal_info.rooms);
         angular.forEach($scope.modal_info.rooms, function(value, key){
             if(value.room_name === data){
                 $('#info_modal').modal('toggle')
@@ -360,7 +371,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
     }
     var polygon;
     $scope.sub_event_clicked = function(place, data_info){
-        // console.log(place);
+        // // console.log(place);
         if(marker){
             map.removeLayer(marker); // remove
             map.removeControl(marker); // remove
@@ -371,7 +382,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         var room_id = data_info['room_id'];
 
 
-        // console.log($scope.building_data);
+        // // console.log($scope.building_data);
         if(data_info['room_id'] == null){
             angular.forEach($scope.building_data, function(value, key){
                 if(value['id'] === building_id){
@@ -447,6 +458,133 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         //     }
         // });   
     }
+
+
+    $scope.SearchFunction = function(query){
+        $scope.mustbe = [];
+        $scope.roomie = [];
+        $scope.buildie = [];
+        // // console.log(query);
+        // // console.log($scope.building_data);
+
+        angular.forEach($scope.building_data, function(value, key){
+            // // console.log(query + " " + value['building_name']);
+            var deci = distance(query, value['building_name']);
+            var percentage = deci * 100;
+            // // console.log(query + " vs " + value['building_name'] + " = " + percentage);
+              if(percentage >= 70){
+                $scope.buildie.push(value);
+                }else{
+
+                }
+
+            angular.forEach(value['rooms'], function(value1, key1){
+                var deci1 = distance(query, value1['room_name']);
+                var percentage1 = deci1 * 100;
+                // // console.log(query + " vs " + value1['room_name'] + " = " + percentage);
+                if(percentage1 >= 70){
+                    $scope.roomie.push(value1);
+                }else{
+
+                }
+
+            });  
+
+          
+        });  
+
+        $scope.mustbe = {
+            'building' : $scope.buildie,
+            'room'     : $scope.roomie
+        };
+
+        // // console.log($scope.mustbe);
+        // var sagot = distance('JOEL', 'JOELA');
+           // // 0.961
+        //    // console.log(sagot * 100);
+        //    // console.log("HELLO THERE");
+           // $scope.sessionverify = function(){
+    }
+
+    // $scope.room_name_clicked
+    $scope.search_click_room = function(data){
+        var roomname = data;
+
+        for(i in map._layers) {
+            if(map._layers[i]._path != undefined) {
+                try {
+                    map.removeLayer(map._layers[i]);
+                }
+                catch(e) {
+                    // console.log("problem with " + e + map._layers[i]);
+                }
+            }
+        }
+
+        if(marker){
+            map.removeLayer(marker); // remove
+            map.removeControl(marker); // remove
+        }
+        $('.searchbox').modal('toggle')
+               
+        var temp = data.coordinates;
+        var result = temp.slice(1,-1);
+        var coordinates = result.split(",");
+
+         marker = L.marker(coordinates,
+                        {title: data["room_name"]}
+                        )
+       .addTo(map);
+       marker.bindPopup('<b>"' + data["room_name"] + '"</b>' ).openPopup();
+
+    }
+
+    $scope.search_click_buil = function(data){
+        var builname = data;
+
+      
+            for(i in map._layers) {
+                if(map._layers[i]._path != undefined) {
+                    try {
+                        map.removeLayer(map._layers[i]);
+                    }
+                    catch(e) {
+                        // console.log("problem with " + e + map._layers[i]);
+                    }
+                }
+            }
+
+            if(marker){
+                map.removeLayer(marker); // remove
+                map.removeControl(marker); // remove
+            }
+        
+        $('.searchbox').modal('toggle')
+        
+        var polygon = L.polygon(JSON.parse(data['coordinates']), {color: 'red', weight: 2,
+        opacity: 3,}).addTo(map);
+
+        polygon.bindPopup('<b>"' + data["building_name"] + '"</b>' ).openPopup();
+    //     if(marker){
+    //         map.removeLayer(marker); // remove
+    //         map.removeControl(marker); // remove
+    //     }
+    //     $('.searchbox').modal('toggle')
+               
+    //     var temp = data.coordinates;
+    //     var result = temp.slice(1,-1);
+    //     var coordinates = result.split(",");
+
+    //      marker = L.marker(coordinates,
+    //                     {title: data["room_name"]}
+    //                     )
+    //    .addTo(map);
+    //    marker.bindPopup('<b>"' + data["room_name"] + '"</b>' ).openPopup();
+
+    }
+
+
+
     mapMarkers= [];
 
     $scope.RealTimeEventCheckerStatic = function(){
@@ -533,8 +671,8 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                     //AUTO REMOVE EVENT
                      var realdate = date.split("-");   //SPLIT Date for comparing
                      var savedate = value['event_date'].split("-");
-                    //  console.log(realdate);
-                    //  console.log(savedate);
+                    // //  console.log(realdate);
+                    // //  console.log(savedate);
     
                      var real_year  = parseInt(realdate[0]);
                      var real_month = parseInt(realdate[1]);
@@ -545,24 +683,24 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                      var save_day   = parseInt(savedate[2]);
     
                      if(save_year < real_year){
-                        // console.log("PAST YEAR");
-                        // console.log(value['id'] + " " + value['event_name']);
+                        // // console.log("PAST YEAR");
+                        // // console.log(value['id'] + " " + value['event_name']);
                         value['is_active'] = "0";
                         // $scope.PastEventsRemover(value['id']);
                      }else{
                         if(save_month < real_month){
-                            // console.log("PAST MONTH");
-                            // console.log(value['id'] + " " + value['event_name']);
+                            // // console.log("PAST MONTH");
+                            // // console.log(value['id'] + " " + value['event_name']);
                             value['is_active'] = "0";
                             // $scope.PastEventsRemover(value['id']);
                         }else{
                             if(save_day < real_day){
-                                // console.log("PAST DAY");
-                                // console.log(value['id'] + " " + value['event_name']);
+                                // // console.log("PAST DAY");
+                                // // console.log(value['id'] + " " + value['event_name']);
                                 value['is_active'] = "0";
                                 // $scope.PastEventsRemover(value['id']);
                             }else{
-                                // console.log(value.sub_events);
+                                // // console.log(value.sub_events);
                                if($scope.viewLiveEvents === 1){
                                     // if(marker){
                                     //     map.removeLayer(marker); // remove
@@ -583,15 +721,15 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                     // var save_end_min    =  parseInt(save_end[1]);
                                     
                                    
-                                    // console.log(value1['sub_event_name']);
+                                    // // console.log(value1['sub_event_name']);
                                     if(real_curr_hour >= save_start_hour && real_curr_hour <= save_end_hour){
-                                        // console.log("SHOW MARKER");
-                                        // console.log( value1["sub_event_name"] + ": " + save_start_hour + " >= " + real_curr_hour +" <= " + save_end_hour);
+                                        // // console.log("SHOW MARKER");
+                                        // // console.log( value1["sub_event_name"] + ": " + save_start_hour + " >= " + real_curr_hour +" <= " + save_end_hour);
                     /////////////////////////////////////////////////////////////////////////////////
                                      
                                         angular.forEach($scope.building_data, function(value2, key2){
                                            
-                                            // console.log(real_curr_hour + " > " + save_start_hour +" " + save_end_hour);
+                                            // // console.log(real_curr_hour + " > " + save_start_hour +" " + save_end_hour);
                                             if(value2['id'] === value1['building_id']){
                                                if(value1['room_id'] == null){
                                                     $scope.marker_coor = value2['coordinates_specific'];
@@ -604,8 +742,30 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                                                     )
                                                 .addTo(map);
                                                 // {closeOnClick: false, autoClose: false});
-                                                console.log(value1["sub_event_desc"]+ " " + value1['sub_show_start_time']+"-"+ value1['sub_show_end_time']);
-                                                marker.bindPopup('<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
+                                                // console.log(value1["sub_event_desc"]+ " " + value1['sub_show_start_time']+"-"+ value1['sub_show_end_time']);
+                                                
+                                                var message = "";
+                                                if(save_year > real_year){
+                                                   var total_year =  save_year - real_year;
+                                                   var message = "Event in " + total_year + " year/s";
+
+                                                }else if (save_month > real_month){
+                                                    var total_month =  save_month - real_month;
+                                                    var message = "Event in " + total_month + " month/s";
+
+                                                }else if (save_day > real_day){
+                                                    var total_day =  save_day - real_day;
+                                                    var message = "Event in " + total_day + " day/s";
+                                                }else{
+                                                    var message = "Event Today!";
+                                                }
+                                                
+
+
+
+
+                                                marker.bindPopup('<strong style="color:blue !important; " >' + message + '</strong>' + '<br>' +
+                                                    '<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
                                                                     // "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>" ).openPopup();
                                                                     "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>",{closeOnClick: false, autoClose: false}).openPopup();
                                                 mapMarkers.push(marker);
@@ -622,9 +782,26 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                                          marker = L.marker(coordinates
                                                                         )
                                                        .addTo(map);
+
+                                                       var message = "";
+                                                       if(save_year > real_year){
+                                                          var total_year =  save_year - real_year;
+                                                          var message = "Event in " + total_year + " year/s";
+       
+                                                       }else if (save_month > real_month){
+                                                           var total_month =  save_month - real_month;
+                                                           var message = "Event in " + total_month + " month/s";
+       
+                                                       }else if (save_day > real_day){
+                                                           var total_day =  save_day - real_day;
+                                                           var message = "Event in " + total_day + " day/s";
+                                                       }else{
+                                                           var message = "Event Today!";
+                                                       }
                                 
-                                                       console.log(value1["sub_event_desc"]+ " " + value1['sub_show_start_time']+"-"+ value1['sub_show_end_time']);
-                                                       marker.bindPopup('<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
+                                                    //    console.log(value1["sub_event_desc"]+ " " + value1['sub_show_start_time']+"-"+ value1['sub_show_end_time']);
+                                                       marker.bindPopup('<strong style="color:blue !important; " >' + message + '</strong>' + '<br>' +
+                                                           '<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
                                                                         // "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>" ).openPopup();
                                                                         "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>",{closeOnClick: false, autoClose: false}).openPopup();
                                                 mapMarkers.push(marker);
@@ -635,11 +812,11 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                     });  
                         /////////////////////////////////////////////////////////////////////////////////
                                     }else if(real_curr_hour < save_start_hour){
-                                        // console.log( value1["sub_event_name"] + ": " + real_curr_hour + " < " + save_start_hour);
-                                        // console.log("MARKER COMING SOON");
+                                        // // console.log( value1["sub_event_name"] + ": " + real_curr_hour + " < " + save_start_hour);
+                                        // // console.log("MARKER COMING SOON");
                                     }else if(real_curr_hour > save_end_hour){
-                                        // console.log( value1["sub_event_name"] + ": " + real_curr_hour + " < " + save_start_hour);
-                                        // console.log("MARKER IS PAST THE HOUR");
+                                        // // console.log( value1["sub_event_name"] + ": " + real_curr_hour + " < " + save_start_hour);
+                                        // // console.log("MARKER IS PAST THE HOUR");
                                         value1['is_active'] = "0";
                                         
                                     }
@@ -662,6 +839,14 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                 $scope.event_data.push($scope.temp_event_data[key]);
             }else{}
     }); 
+    
+    $scope.event_data.sort(function(a,b){
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(a['event_date']) - new Date(b['event_date']);
+      });
+
+    //   array.sortBy(function(o){ return o.date });
     
     
     }
@@ -792,9 +977,46 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         $scope.RealTimeEventCheckerStatic($scope.temp_event_data);
         $scope.RealTimeEventChecker($scope.temp_event_data);
   
-//    console.log($scope.event_data);
+// //    console.log($scope.event_data);
 
      });
+
+     $scope.removeEvent = function(param){
+
+        // console.log(param['id']);
+        // // console.log($scope.event_data);
+            alertify.confirm('Do you want to Remove the Event? <b>" <br>' + 
+            '<small style="color:red;">*This is not reversible</small>',
+            function(){
+    
+        $scope.past_id = JSON.stringify(param['id']);
+                
+        $http.post('handler/removeEventHandler.php', $scope.past_id).then(function(data){
+            // $scope.PMCTQ_unit = unittemp;
+        });
+    
+    
+                angular.forEach($scope.event_data, function(value, key){
+                    if(param['id'] === value['id']){
+                        // // console.log($scope.event_data.indexOf(value['event_name']) + " " + 'event_name')
+                        // var tempindex = $scope.event_data.indexOf(value['event_name']);
+                        $scope.event_data.splice(key, 1);
+                    }else{
+                        // // console.log("NOT MATCH");
+                    }
+                });  
+    
+    
+    
+            alertify.success('REMOVE SUCCESSFUL!');
+            },
+            function(){
+            alertify.error('REMOVE CANCELLED!');
+            }  
+            ).setHeader('<em> Alert! </em> ');
+    
+    
+    }
            
     $scope.ClickHandler = function(data){
         var data = $scope.building_code;
@@ -817,7 +1039,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         
             $http.post('handler/homeHandler.php', modal_param).then(function(data){
                 $scope.modal_info = data.data[0];
-                // console.log( $scope.modal_info);
+                // // console.log( $scope.modal_info);
 
                 $scope.classroom     = [];
                 $scope.office        = [];
@@ -830,19 +1052,19 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
                     if(value.room_type === '0'){
                         $scope.classroom.push($scope.modal_info.rooms[key]);
-                        // console.log(value.room_type + " CLASSROOM");
+                        // // console.log(value.room_type + " CLASSROOM");
                     }else if (value.room_type === '1'){
                         $scope.office.push($scope.modal_info.rooms[key]);
-                        // console.log(value.room_type + " OFFICE");
+                        // // console.log(value.room_type + " OFFICE");
                     }else if (value.room_type === '3'){
                         $scope.office.push($scope.modal_info.rooms[key]);
-                        // console.log(value.room_type + " OFFICE");
+                        // // console.log(value.room_type + " OFFICE");
                     }else if (value.room_type === '2'){
                         $scope.comfortroom.push($scope.modal_info.rooms[key]);
-                        // console.log(value.room_type + " CR");
+                        // // console.log(value.room_type + " CR");
                     }else if (value.room_type === '4'){
                         $scope.facility.push($scope.modal_info.rooms[key]);
-                        // console.log(value.room_type + " FACILITY");
+                        // // console.log(value.room_type + " FACILITY");
                     }
                 });  
                 // $scope.PMCTQ_unit = unittemp;
@@ -908,6 +1130,9 @@ $scope.PastEventsRemover = function(id){
         });
  
 }
+
+
+
 $scope.PastSubEventsRemover = function(id){
 
   
@@ -989,7 +1214,7 @@ $scope.create_ADD_Date = function(){
    
 
 
-   // console.log($scope.add);
+//    // console.log($scope.add);
     if(getEventDate == undefined || getEventDate == null || getEventDate == "" ||
     getEventName == undefined || getEventName == null || getEventName == "" ||
     getEventDescription == undefined || getEventDescription == null || getEventDescription == "" 
@@ -1019,7 +1244,7 @@ $scope.addBuildingChange = function(){
             $scope.addRoom = [];
             angular.forEach($scope.building_data, function(value, key){
                 if(value.building_name === selectedBui){
-                        console.log(value.building_name + " IS EQUAL " + selectedBui);
+                        // console.log(value.building_name + " IS EQUAL " + selectedBui);
 
                             if(value.rooms.length == 0){
                             $scope.addRoom.push("None");
@@ -1203,8 +1428,8 @@ $scope.removeSubEvent = function(id, name){
 
 
 $scope.saveEvent = function(name){
-    console.log($scope.EventHoldertemp);
-    console.log($scope.EventHoldertemp.sub_specification);
+    // console.log($scope.EventHoldertemp);
+    // console.log($scope.EventHoldertemp.sub_specification);
     if($scope.EventHoldertemp.sub_specification.length == 0){
 
         alertify.alert("<b style='color:red;'>You need to create a schedule of sub-events first!</b>").setHeader('<em> Alert! </em> '); 
@@ -1248,10 +1473,10 @@ $scope.submitLogIn = function(user, pass){
                     
 
                 if($scope.login_information == "false_user"){
-                    console.log("USER");
+                    // console.log("USER");
                     alertify.alert("<p style='color:red;'>No Existing User!</p>").setHeader('<em> INVALID! </em> ');
                 }else if($scope.login_information == "false_pass"){
-                    console.log("PASS");
+                    // console.log("PASS");
                     alertify.alert("<p style='color:red;'>Incorrect Password!</p>").setHeader('<em> Alert! </em> '); 
                 }else{
                      $scope.sessionverify();
@@ -1277,15 +1502,15 @@ $scope.getAllUsers = function(){
 
 $scope.generatePassword = function(id){
 
-    // console.log(id);
+    // // console.log(id);
      angular.forEach($scope.user_data, function(value, key){
          angular.forEach(value, function(value1, key1){
              if(value1['id'] == id){
                  
-                  value1['pass_temp'] = Math.random().toString(36).substr(2, 10);
+                  value1['temp_pass'] = Math.random().toString(36).substr(2, 10);
                   var userparam = {
                     'id' : id,
-                    'pass' : value1['pass_temp']
+                    'pass' : value1['temp_pass']
                     };
                   $http.post('handler/insertTempPassHandler.php', userparam).then(function(data){
 
@@ -1326,7 +1551,7 @@ $scope.submitLogOut = function(){
 
 
     // $scope.mapmapparam = function() {
-    //    console.log($scope.savers);
+    // //    console.log($scope.savers);
      
     // }
 

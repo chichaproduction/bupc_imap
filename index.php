@@ -25,7 +25,7 @@
         <link href="css/full.css" rel="stylesheet">
        
 
-        
+        <script src="js/index.js"></script>
           <!-- JQUERY priority 1 -->
           <script src="js/jquery.min.js"></script>
 
@@ -91,6 +91,9 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="#"  data-toggle="modal" data-target=".searchbox" >Search</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#"  data-toggle="modal" data-target=".eventsModal" >Events</a>
               </li>
               <li class="nav-item">
@@ -107,6 +110,73 @@
       <div class="container navtopfix full" style="height:100%; padding:0;">
       <div id="map"></div>
       </div>
+
+     <!-- ACCESS MODAL -->
+      <div class="modal fade searchbox" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg-success textWhite">
+              <h5 class="modal-title" id="accessModalCenterTitle">SEARCH</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Search</span>
+              </div>
+              <input ng-model="SearchQuery" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" ng-change="SearchFunction(SearchQuery)">
+            </div>
+            <h4 class="text-center">Did you mean?</h4>
+            <!-- BUILDINGS -->
+            <div class="row text-center">
+              <div class="col-lg-6 text-center">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="table-info">
+                    <th>
+                      BUILDINGS/S
+                    </th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <tr ng-repeat="(key, value) in mustbe.building track by $index">
+                    <td ng-click="search_click_buil(value)">
+                      {{value.building_name}}
+                    </td>
+                  </tr> 
+                </tbody>
+              </table>
+              </div>
+            <!-- BUILDINGS -->
+              <div class="col-lg-6 text-center">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="table-info"> 
+                    <th>
+                      ROOM/S
+                    </th>
+                  </tr> 
+                </thead>
+             
+              <tbody>
+                <tr ng-repeat="(key, value) in mustbe.room track by $index">
+                  <td ng-click="search_click_room(value)"> 
+                    {{value.room_name}}
+                  </td>
+                </tr> 
+              </tbody>
+               </table>
+              </div>
+            </div>
+              <!-- {{mustbe}} -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
 
       <!-- ACCESS MODAL -->
 <form>
@@ -231,6 +301,73 @@
                                       </div>
                                       <!-- SUB EVENT VIEW END -->
                                 </div>
+                              </div>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+              <!-- REMOVE Event -->
+              <div class="card" ng-show="defaultView == 3" >
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="accordion" id="accordionEvent" ng-repeat="(key, value) in event_data track by $index">
+                      <div class="card text-white bg-dark" style="border-radius: 5px 5px 5px 5px !important; ">
+                        <div class="card-header collapsed text-center" id="event_modal_head_{{key}}" data-toggle="collapse" data-target="#event_modal_id_{{key}}" aria-expanded="true" aria-controls="event_modal_id_{{key}}">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                  <strong><font color="#edbbff">{{value.event_date}}</font> <span class="badge badge-info">{{value.sub_count}}</span><h5>{{value.event_name}} </h5></strong>    
+                             
+                              <div class="text-center" style="border: 1px dotted white;">"{{value.event_desc}}"</div>    
+                              </div>
+                            </div>
+                        
+                                              
+                        </div>
+                              <div id="event_modal_id_{{key}}" class="collapse" aria-labelledby="event_modal_head_{{key}}" data-parent="#accordionEvent">
+  
+                                <div class="card-body">
+                                  
+                                  <!-- SUB EVENT VIEW -->
+                                   <div class="accordion" id="accordionEvent1_remove" ng-repeat="(key1, value1) in value.sub_events track by $index">
+                                        <div class="card bg-light" style="color:black !important; border-radius:3px 3px 3px 3px !important;">
+                                          <div class="card-header collapsed" id="remove_sub_event_modal_head_{{key1}}" data-toggle="collapse" data-target="#remove_sub_event_modal_id_{{key1}}" aria-expanded="true" aria-controls="sub_event_modal_id_{{key1}}">
+
+                                          <div class="row">
+                                            <div class="col-lg-6 text-center">
+                                              <h5><span class="badge badge-secondary">{{value1.sub_show_start_time}}</span> - <span class="badge badge-secondary">{{value1.sub_show_end_time}}</span> </h5> 
+                                            </div>
+                                            <div class="col-lg-6 text-center">
+                                              <h5><strong>{{value1.sub_event_name}}</strong></h5> 
+                                            </div>
+                                          </div>              
+                                        </div>
+                                        <div id="remove_sub_event_modal_id_{{key1}}"  class="collapse" aria-labelledby="remove_sub_event_modal_head_{{key1}}" data-parent="#accordionEvent1_remove">
+                                          <div class="card-body" >
+                                            <div class="row" style="border:1px solid green; border-radius:7px 7px 7px 7px !important; background-color:  rgb(175, 255, 180) !important;">
+                                              <div class="col-lg-12 text-center">
+                                                <h6><strong>"{{value1.sub_event_desc}}"</strong></h6>
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-lg-12 text-center" style>
+                                                <h6><span class="badge badge-warning">Host: {{value1.sub_event_hosted_by}}</span> <a class="badge badge-info" ng-click="sub_event_clicked(value1.sub_event_hosted_at, value1)" >@ {{value1.sub_event_hosted_at}}</a></h6> 
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        
+                                    </div>
+                                  
+                                      <br>
+                                    </div>
+                                      <!-- SUB EVENT VIEW END -->
+                                </div>
+                                <button type="button" class="btn btn-danger btn-block" ng-click="removeEvent(value)">Remove Event</button>
                               </div>
                       </div>
                       <br>
@@ -501,7 +638,7 @@
                             <tr ng-repeat="(key, value) in user_data.temp track by $index">
                               <td>{{$index}}</td>
                               <td>{{value.username}}</td>
-                              <td>{{value.pass_temp}}</td>
+                              <td>{{value.temp_pass}}</td>
                               <td>
                               <button type="button" class="btn btn-success" ng-click="generatePassword(value.id)">Regenerate Password</button>
                                 
@@ -519,8 +656,8 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-primary" ng-click="eventController(1)">View Event</button>
                   <button ng-show="tempadminaccess == 1" type="button" class="btn btn-success" ng-click="eventController(2)">Add Event</button>
-                  <button ng-show="adminaccess == 1" type="button" class="btn btn-warning" ng-click="eventController(3)">Edit Event</button>
-                  <button ng-show="adminaccess == 1" type="button" class="btn btn-danger"   ng-click="eventController(4)">Temporary Account Management</button>
+                  <button ng-show="adminaccess == 1" type="button" class="btn btn-danger" ng-click="eventController(3)">Remove Event</button>
+                  <button ng-show="adminaccess == 1" type="button" class="btn btn-warning"   ng-click="eventController(4)">Temporary Account Management</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
 

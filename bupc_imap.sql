@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 14, 2019 at 06:12 PM
+-- Generation Time: Feb 18, 2019 at 03:05 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 5.6.33
 
@@ -90,11 +90,13 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`id`, `event_name`, `event_desc`, `event_date`, `is_active`, `created_by`, `created_at`, `updated_by`, `updated_at`) VALUES
-(1, 'CLEANING DRIVE', 'Cleaning Sensation', '2019-02-12', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(2, 'Sport\'s Fest', '2 Day Special of Sport\'s battle between students', '2019-02-13', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(3, 'Today as in Today', 'aaaaaaaaaaaaaaaa', '2019-02-15', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(4, 'asvasfasvasf', 'ssss', '2019-02-15', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(5, 'xxxxxxxxxxxxx', 'xxxasxaxcasfdaefw', '2019-02-15', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00');
+(1, 'CLEANING DRIVE', 'Cleaning Sensation', '2019-02-17', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(2, 'Sport\'s Fest', '2 Day Special of Sport\'s battle between students', '2019-02-17', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(3, 'Today as in Today', 'aaaaaaaaaaaaaaaa', '2019-02-16', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(4, 'asvasfasvasf', 'ssss', '2019-02-16', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(5, 'xxxxxxxxxxxxx', 'xxxasxaxcasfdaefw', '2019-02-16', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(6, 'ewascasdcdcwcadw', 'avfdadasd', '2019-02-17', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(7, 'fasdas', 'fasdasfasd', '2019-02-19', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -119,10 +121,10 @@ CREATE TABLE `rooms` (
 --
 
 INSERT INTO `rooms` (`id`, `building_id`, `room_name`, `room_type`, `coordinates`, `created_at`, `updated_at`, `updated_by`, `created_by`) VALUES
-(1, 1, 'EBC11', '0', '[68.4914960130499, 74.08397102227872]', '2019-01-10 00:00:00', '', '', ''),
-(2, 1, 'EBC12', '0', '[69.09573131730747, 75.93750000000001]', '2019-01-10 00:00:00', '', '', ''),
-(3, 1, 'EBC13', '0', '[69.77527842282436, 78.39843750000001]', '2019-01-10 00:00:00', '', '', ''),
-(4, 1, 'EBC14', '4', '[70.72603320192967, 78.39843750000001]', '2019-01-10 00:00:00', '', '', ''),
+(1, 1, 'ECB11', '0', '[68.4914960130499, 74.08397102227872]', '2019-01-10 00:00:00', '', '', ''),
+(2, 1, 'ECB12', '0', '[69.09573131730747, 75.93750000000001]', '2019-01-10 00:00:00', '', '', ''),
+(3, 1, 'ECB13', '0', '[69.77527842282436, 78.39843750000001]', '2019-01-10 00:00:00', '', '', ''),
+(4, 1, 'ECB14', '4', '[70.72603320192967, 78.39843750000001]', '2019-01-10 00:00:00', '', '', ''),
 (5, 1, 'ECB15', '4', '[71.01422875016989, 64.86328125000001]', '2019-01-10 00:00:00', '', '', ''),
 (6, 1, 'ECB16', '4', '[70.25614959754986, 62.22656250000001]', '2019-01-10 00:00:00', '', '', ''),
 (7, 1, 'ECB17', '4', '[70.01710130055973, 60.82031250000001]', '2019-01-10 00:00:00', '', '', ''),
@@ -257,16 +259,18 @@ CREATE TABLE `sub_events` (
 --
 
 INSERT INTO `sub_events` (`id`, `event_id`, `building_id`, `room_id`, `sub_event_name`, `sub_event_desc`, `sub_event_time_start`, `sub_event_time_end`, `sub_event_hosted_at`, `sub_event_hosted_by`, `is_active`, `created_by`, `created_at`, `updated_by`, `updated_at`) VALUES
-(1, 1, 9, 98, 'Orientation', 'Meetup and ORIENTATION', '08:00', '10:00', 'FOOD TECHNOLOGY BUILDING - FTB2', 'Mam Chie', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(2, 1, 4, 67, 'Clean University', 'Clean the School', '10:00', '12:00', 'TECHNOLOGY BUILDING - TB 3', 'Mr. Jobert', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(3, 2, 13, NULL, 'Orientation', 'All Departments Orientation', '08:00', '10:00', 'BUPC Gymnasium', 'Sport\'s Federation', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(4, 2, 13, NULL, 'Basketball', 'CESD vs EDUC', '10:00', '12:00', 'BUPC Gymnasium', 'Sport\'s Federation', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(5, 2, 16, NULL, 'Lunch', 'Free Food for Players', '12:00', '13:00', 'CANTEEN', 'Dean', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(6, 2, 13, NULL, 'Basketball', 'TECHNOLOGY vs NURSING', '13:00', '15:00', 'BUPC Gymnasium', 'Sport\'s Federation', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(7, 2, 13, NULL, 'Basketball', 'FINALS\nWinner vs Winner', '15:00', '17:00', 'BUPC Gymnasium', 'Sport\'s Federation and Dean', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(8, 3, 14, NULL, 'abcdefghijklomoasf', 'defewgwefewf', '21:08', '23:34', 'AUDIO VISUAL ROOM BUILDING', 'asdasfa', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(9, 4, 16, NULL, 'gasdasdas', 'asfsadas', '21:08', '23:33', 'CANTEEN', 'fassadasf', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
-(10, 5, 6, 77, 'vefwfeewf', 'gewfewg', '21:12', '23:24', 'CACAPIT BUILDING - REGISTRAR', 'wegewewf', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00');
+(1, 1, 9, 98, 'Orientation', 'Meetup and ORIENTATION', '08:00', '11:42', 'FOOD TECHNOLOGY BUILDING - FTB2', 'Mam Chie', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(2, 1, 4, 67, 'Clean University', 'Clean the School', '10:00', '12:40', 'TECHNOLOGY BUILDING - TB 3', 'Mr. Jobert', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(3, 2, 13, NULL, 'Orientation', 'All Departments Orientation', '08:00', '09:32', 'BUPC Gymnasium', 'Sport\'s Federation', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(4, 2, 13, NULL, 'Basketball', 'CESD vs EDUC', '08:00', '11:42', 'BUPC Gymnasium', 'Sport\'s Federation', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(5, 2, 16, NULL, 'Lunch', 'Free Food for Players', '08:00', '11:42', 'CANTEEN', 'Dean', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(6, 2, 13, NULL, 'Basketball', 'TECHNOLOGY vs NURSING', '13:00', '23:00', 'BUPC Gymnasium', 'Sport\'s Federation', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(7, 2, 13, NULL, 'Basketball', 'FINALS\nWinner vs Winner', '00:00', '00:40', 'BUPC Gymnasium', 'Sport\'s Federation and Dean', 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(8, 3, 14, NULL, 'abcdefghijklomoasf', 'defewgwefewf', '00:08', '00:34', 'AUDIO VISUAL ROOM BUILDING', 'asdasfa', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(9, 4, 16, NULL, 'gasdasdas', 'asfsadas', '00:08', '00:33', 'CANTEEN', 'fassadasf', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(10, 5, 6, 77, 'vefwfeewf', 'gewfewg', '00:12', '00:20', 'CACAPIT BUILDING - REGISTRAR', 'wegewewf', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(11, 6, 2, 17, 'fasdasdasdd', 'fasfqefdwad', '08:00', '10:00', 'SALCEDA BUILDING - SB 3', 'faewdefw', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00'),
+(12, 7, 2, 16, 'asfasdasd', 'fafsdasf', '08:10', '22:20', 'SALCEDA BUILDING - SB 2', 'aasfasdasd', 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -278,6 +282,8 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(5555) NOT NULL,
   `password` varchar(5555) NOT NULL,
+  `access_id` tinyint(4) NOT NULL COMMENT '0 = temporary, 1 = admin',
+  `temp_pass` varchar(5555) DEFAULT NULL,
   `is_active` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -285,10 +291,21 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `is_active`) VALUES
-(1, 'administrator', '$2y$10$4SYy4kg2/2Yq.GypUVfFTOMtqqb6K7rmSQUUzz7XImHD/Jm2GzXle', 1),
-(2, 'temporary', '$2y$10$rM98KNDqTJWQg7XTj2Lo6ud2WdNVEtkMHPCkFQ/ZCtNq03dmO4iZ6', 1),
-(3, 'backupadmin', '$2y$10$vu/irHpFqEeDVYzPoSIqeu7y.7yA/qkBLNUydHukuxipv.WI6mSyC', 1);
+INSERT INTO `user` (`id`, `username`, `password`, `access_id`, `temp_pass`, `is_active`) VALUES
+(1, 'administrator_developer', '$2y$10$bgmqplh.Ie4ovR6ncKihDOZm1/8mneOtGcjReDVyAzF9ZWl3L9.ZC', 1, NULL, 1),
+(2, 'temporary', '$2y$10$vBZkqJ5my.QjZZ7XZN577ux1hOLWGC5ao4munYoADz/Z.QBorpytm', 0, 'uxj52ih4sf', 1),
+(3, 'backupadmin', '$2y$10$in4JNtkT37QD8Au4eNRvm.WKXJdoEtRJXDpq0z4xqGOobzAnJI00G', 1, NULL, 1),
+(4, 'temporary_acc_1', '$2y$10$9x.K/BVbA3XU7XG17mKvfuMW2XHSpjQQRR911SDbBxc1iNip/Y5qK', 0, '693zwxim5l', 1),
+(5, 'temporary_acc_2', '$2y$10$WPK1Ez/Je.Ati3fpxnSb1./sUyQQDKvFeqKT0TDKpEuP5ACXfFIUW', 0, '61dnswwz4z', 1),
+(6, 'temporary_acc_3', '$2y$10$PPoY0elJrVjFc.cQbzwgPeaRDY8jtbWSGW3joAv8mCpGGLtk3tD6K', 0, 'ri2t5qbzy6', 1),
+(7, 'temporary_acc_4', '$2y$10$OLxdC9C806s07SVXqTxfV.yM.xXHESoqElmWKsI071ESZd8KcuUfy', 0, 'e1vryyv872', 1),
+(8, 'temporary_acc_5', '$2y$10$6yIrIgoGmmA05n/nJWlR.uYFzuGQ1hpGszZhJ/TZ3PiwIkRj/KpM6', 0, 'kbojk3i6q3', 1),
+(9, 'temporary_acc_6', '$2y$10$exBw7J8GhiP8pddLdqLXduRzuNC3AB1dS.CYIWqPtYZ7bxrb/irui', 0, 'tew18i0c83', 1),
+(10, 'temporary_acc_7', '$2y$10$LHWJiX8.ZXyIPANbqSaJPeqLd98YO8UBkX8FybwbTbNX5T21eyzNy', 0, 'tzgbzfiuy1', 1),
+(11, 'temporary_acc_8', '$2y$10$NgXcdHQlTYwm..OG6CW5f.TrfifdThmcxPoJThezl0vlmMM9FhpxG', 0, '9f9s6fk1i8', 1),
+(12, 'temporary_acc_9', '$2y$10$bgf2rdjKVy9A5Hji.4.yTu3uDiyvzvyN9bAbKHdsmAMYE/BfbDVG6', 0, 'theaxhyrqm', 1),
+(13, 'temporary_acc_10', '$2y$10$I9.qMFqla7BJy5FvPjWdE.B0V6MjX4aeoeuIgAjXPy7mi90hiq.ti', 0, 'ka5pp1ouok', 1),
+(14, 'administrator', '$2y$10$DAZeeqCOrWW/VR.ztwtkyukRfVEsanAgopDI4azO5h5F1rC8sfRCq', 1, NULL, 1);
 
 --
 -- Indexes for dumped tables
@@ -338,7 +355,7 @@ ALTER TABLE `buildings`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `rooms`
@@ -350,13 +367,13 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT for table `sub_events`
 --
 ALTER TABLE `sub_events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -10,7 +10,7 @@ class getAllUsersController{
 
         /// xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   GET coordinates INFORMATION xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         
-        $users_stmt = $dbCon->prepare('SELECT id,username, access_id, password FROM user');
+        $users_stmt = $dbCon->prepare('SELECT id,username, access_id, password, temp_pass FROM user');
         $users_stmt->execute(); 
         $users_stmt_result = $users_stmt->fetchAll(\PDO::FETCH_ASSOC);
 
