@@ -104,6 +104,50 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
         
+
+        // function onMapClick(e) {
+        //     alert(e.latlng);
+        //     var rrr = e.latlng
+            
+        //   $scope.savers = "[" + rrr.lat + ", " + rrr.lng + "]";
+        // //   console.log($scope.savers);
+        // //   $scope.mapmapparam();
+        // }
+        // map.on('click', onMapClick);
+
+
+        
+        // var jopay = L.polygon(
+        //     [
+        //         [44.47436, 106.570312],
+        //         [43.525489, 110.085937],
+        //         [48.933467, 117.292968],
+        //         [50.151055, 114.082031],
+        //         [50.151055, 112.324219],
+        //         [45.675281, 106.347656]
+        //     ]
+        // , {color: 'green',
+        //     weight: 5,
+        //     opacity: 3,
+        //    // dashArray: '20,15',
+        //    // lineJoin: 'round'
+        // }).addTo(map);
+
+        // var jopay2 = L.polygon(
+        //     [
+        //         [32.560457, 72.750006],
+        //         [33.738483, 70.113287],
+        //         [40.060982, 78.199224],
+        //         [39.411771, 80.683594]
+        //     ]
+        // , {color: 'green',
+        //     weight: 5,
+        //     opacity: 3,
+        //    // dashArray: '20,15',
+        //    // lineJoin: 'round'
+        // }).addTo(map);
+
+   
             //Buildings
 
             // Cacapit Building
@@ -277,6 +321,23 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                // lineJoin: 'round'
             }).addTo(map);
 
+              // MOTORPOOL 2
+              $scope.building_info_m2 = $scope.building_info[19][0];
+              var m2 = L.polygon(JSON.parse($scope.building_info_m2['coordinates']), {color: 'green',
+                  weight: 0,
+                  opacity: .2,
+                 // dashArray: '20,15',
+                 // lineJoin: 'round'
+              }).addTo(map);
+
+              $scope.building_info_p = $scope.building_info[20][0];
+              var p = L.polygon(JSON.parse($scope.building_info_p['coordinates']), {color: 'green',
+                  weight: 0,
+                  opacity: .2,
+                 // dashArray: '20,15',
+                 // lineJoin: 'round'
+              }).addTo(map);
+
             cb.on('click',       function(e){ $scope.building_code = $scope.building_info_cb['building_code'];   $scope.ClickHandler() });
             sb.on('click',       function(e){ $scope.building_code = $scope.building_info_sb['building_code'];   $scope.ClickHandler() });
             ab.on('click',       function(e){ $scope.building_code = $scope.building_info_ab['building_code'];   $scope.ClickHandler() });
@@ -296,6 +357,8 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
             arec.on('click',     function(e){ $scope.building_code = $scope.building_info_arec['building_code']; $scope.ClickHandler() });
             mwsb.on('click',     function(e){ $scope.building_code = $scope.building_info_mwsb['building_code']; $scope.ClickHandler() });
             m.on('click',        function(e){ $scope.building_code = $scope.building_info_m['building_code'];    $scope.ClickHandler() });
+            m2.on('click',       function(e){ $scope.building_code = $scope.building_info_m2['building_code'];   $scope.ClickHandler() });
+            p.on('click',        function(e){ $scope.building_code = $scope.building_info_p['building_code'];    $scope.ClickHandler() });
 
 
      
@@ -329,16 +392,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
   
     
     ////////////////////////////////////////////////////////////////////////////////////// GET LAT LNG OF MAP
-            // function onMapClick(e) {
-            //     // alert(e.latlng);
-            //     var rrr = e.latlng
-                
-            //   $scope.savers = "[" + rrr.lat + ", " + rrr.lng + "]";
-            // //   console.log($scope.savers);
-            // //   $scope.mapmapparam();
-            // }
-            // map.on('click', onMapClick);
-
+     
 
 ////////////////////////////////// MARKERS ////////////////////
            var marker;
