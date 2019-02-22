@@ -136,7 +136,7 @@
                 <thead>
                   <tr class="table-info">
                     <th>
-                      BUILDINGS/S
+                      BUILDINGS  |  ROOM FACILITIES
                     </th>
                   </tr> 
                 </thead>
@@ -155,7 +155,7 @@
                 <thead>
                   <tr class="table-info"> 
                     <th>
-                      ROOM/S
+                      ROOMS  |  FACILITIES
                     </th>
                   </tr> 
                 </thead>

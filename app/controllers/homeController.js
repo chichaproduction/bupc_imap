@@ -521,9 +521,11 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         // // console.log(query);
         // // console.log($scope.building_data);
 
+        var str = query;
+        var res = str.toUpperCase();
         angular.forEach($scope.building_data, function(value, key){
             // // console.log(query + " " + value['building_name']);
-            var deci = distance(query, value['building_name']);
+            var deci = distance(res, value['building_name']);
             var percentage = deci * 100;
             // // console.log(query + " vs " + value['building_name'] + " = " + percentage);
               if(percentage >= 70){
@@ -533,7 +535,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                 }
 
             angular.forEach(value['rooms'], function(value1, key1){
-                var deci1 = distance(query, value1['room_name']);
+                var deci1 = distance(res, value1['room_name']);
                 var percentage1 = deci1 * 100;
                 // // console.log(query + " vs " + value1['room_name'] + " = " + percentage);
                 if(percentage1 >= 70){
