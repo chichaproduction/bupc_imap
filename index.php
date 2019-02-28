@@ -194,12 +194,12 @@
                     <div class="form-group">
                     <small class="form-text text-muted text-center" style="color:red !important;">*Access to Event Management.</small>
                       <label for="usernameInput">Username</label>
-                      <input autocomplete="off" ng-model="user_user" type="text" class="form-control" id="usernameInput" placeholder="Enter Username" required>
+                      <input autocomplete=off ng-model="user_user" type="text" class="form-control" id="usernameInput" placeholder="Enter Username" required>
                       
                     </div>
                     <div class="form-group">
                       <label for="InputPassword">Password</label>
-                      <input autocomplete="off" ng-model="user_pass" type="password" class="form-control" id="InputPassword" placeholder="Password" required>
+                      <input autocomplete=off ng-model="user_pass" type="password" class="form-control" id="InputPassword" placeholder="Password" required>
                     </div>
             </div>
 

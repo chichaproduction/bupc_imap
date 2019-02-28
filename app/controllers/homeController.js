@@ -99,7 +99,11 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
         // Create the map
         var map = L.map('map', mapOptions);
 
-        var imageUrl = 'img/Main MAP.png',
+
+        //MAP CONFIGURATIONS //UNCOMMMENT TO USE
+        // var imageUrl = 'img/Main MAP.png',      
+        var imageUrl = 'img/Main MAP with Flow.png',
+        // var imageUrl = 'img/Samplers.png',
         imageBounds = [center, [10.8650, 200.2094]];
 
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
@@ -661,12 +665,18 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                      var save_year  = parseInt(savedate[0]);
                      var save_month = parseInt(savedate[1]);
                      var save_day   = parseInt(savedate[2]);
-    
+                    //  console.log(save_year + " " + real_year);
+                    //  console.log(save_month + " " + real_month);
+                    //  console.log(save_day + " " + real_day);
                      if(save_year < real_year){
+                         
                         $scope.PastEventsRemover(value['id']);
                      }else{
                         if(save_month < real_month){
+                            
                             $scope.PastEventsRemover(value['id']);
+                        }else if(save_month > real_month){
+
                         }else{
                             if(save_day < real_day){
                                 $scope.PastEventsRemover(value['id']);
@@ -717,7 +727,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
             }
         }
         
-
+        
         angular.forEach($scope.temp_event_data, function(value, key){
 
              if(value['is_active'] == "0"){
@@ -749,7 +759,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                             // // console.log(value['id'] + " " + value['event_name']);
                             value['is_active'] = "0";
                             // $scope.PastEventsRemover(value['id']);
-                        }else{
+                        }else if(save_month > real_month){}else{
                             if(save_day < real_day){
                                 // // console.log("PAST DAY");
                                 // // console.log(value['id'] + " " + value['event_name']);
@@ -1343,7 +1353,7 @@ $scope.addSubEvent = function(){
                 
                 timestr1 = getStartTimeFrom;
                 timestr2 = getEndTimeFrom;
-                    if(timestr1 > timestr2){
+            if(timestr1 > timestr2){
                 alertify.alert("<p style='color:red;'>Invalid Start time and End time!</p>").setHeader('<em> Alert! </em> '); 
             }else{
                             if(getRoom === 'None'){
@@ -1353,13 +1363,6 @@ $scope.addSubEvent = function(){
                             }
 
 
-                        (angular.element('#subevent_name').val(""));
-                        (angular.element('#event_start_time').val(""));
-                        (angular.element('#event_end_time').val(""));
-                        (angular.element('#repeatSelectBui').val(""));
-                        (angular.element('#repeatSelectRoom').val(""));
-                        (angular.element('#subEventDescription').val(""));
-                        (angular.element('#subevent_host').val(""));
 
                 var timestr1_1 = getStartTimeFrom;
                 var timestr2_1 = getEndTimeFrom;
@@ -1458,6 +1461,15 @@ $scope.addSubEvent = function(){
                                 };
 
                                 $scope.EventHoldertemp.sub_specification.push($scope.event_temp);
+                                (angular.element('#subevent_name').val(""));
+                                (angular.element('#event_start_time').val(""));
+                                (angular.element('#event_end_time').val(""));
+                                (angular.element('#repeatSelectBui').val(""));
+                                (angular.element('#repeatSelectRoom').val(""));
+                                (angular.element('#subEventDescription').val(""));
+                                (angular.element('#subevent_host').val(""));
+
+                                
                 }
 
             }
@@ -1468,15 +1480,24 @@ $scope.removeSubEvent = function(id, name){
     alertify.confirm('Do you want to remove <b>"' + name +  '"</b> sub-event?',
 
 
-
             function(){
-                $scope.EventHoldertemp.sub_specification.splice(id-1, 1);
+
+                angular.forEach($scope.EventHoldertemp.sub_specification, function(value, key){
+                    if(id === value['id']){
+                        $scope.EventHoldertemp.sub_specification.splice(key, 1);
+                    }else{
+                    }
+                });  
+                
+                // $scope.EventHoldertemp.sub_specification.splice(id, 1);
                 alertify.success('Remove Succesfully');
             },
             function(){
                 alertify.error('Remove Cancelled');
             }  
             ).setHeader('<em> Alert! </em> ');
+
+              
   
 }
 
@@ -1499,12 +1520,19 @@ $scope.saveEvent = function(name){
                 $scope.EventHolder = JSON.stringify($scope.EventHoldertemp);
                 
                     $http.post('handler/insertEventHandler.php', $scope.EventHolder).then(function(data){
-                        // $scope.PMCTQ_unit = unittemp;
+                        $scope.save_result =data.data;
+                        console.log($scope.save_result);
+                        if($scope.save_result == 0 || $scope.save_result == '0' ){
+                            alertify.alert("<b style='color:red;'>Time Conflict! Please Check You Sub Events that there is no conflicting or in-betweent time schedules.</b>").setHeader('<em> Alert! </em> '); 
+                        }else{
+                            alertify.success('Saved Succesfully');
+                            $('#eventsModal').modal('toggle')
+                             window.location.reload();
+                        }
                     });
 
-                alertify.success('Saved Succesfully');
-                $('#eventsModal').modal('toggle')
-                window.location.reload();
+              
+               
             },
             function(){
                 alertify.error('Save Cancelled');
@@ -1520,7 +1548,10 @@ $scope.submitLogIn = function(user, pass){
         'pass' : pass
         };
 
+    
+
             if((user == "" && pass == "" )||(user == undefined && pass == undefined) ){
+
             }else{
                 var log_param = JSON.stringify(logparam);
               
@@ -1535,7 +1566,9 @@ $scope.submitLogIn = function(user, pass){
                     // console.log("PASS");
                     alertify.alert("<p style='color:red;'>Incorrect Password!</p>").setHeader('<em> Alert! </em> '); 
                 }else{
+                    // console.log($scope.login_information);
                      $scope.sessionverify();
+                     alertify.success('Welcome ' + $scope.login_information + '!'); 
                     $('#accessModal').modal('toggle')
                 }
 
@@ -1586,7 +1619,8 @@ $scope.submitLogOut = function(){
      });
 
      $scope.sessionverify();
-     $('#accessModal').modal('toggle')
+     window.location.reload();
+     $('#accessModal').modal('toggle').
      angular.element('#usernameInput').val(undefined);
      angular.element('#InputPassword').val(undefined);
   
