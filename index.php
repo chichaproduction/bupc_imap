@@ -76,7 +76,7 @@
     <body>
 
         <!-- Navigation -->
-        
+        <audio id="audio" src="audio/notifEvent.mp3" ></audio>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark-green fixed-top">
         <div class="container">
           <a class="navbar-brand" href="#">BUPC INTERACTIVE MAP</a>

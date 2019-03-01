@@ -829,7 +829,8 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
 
 
 
-
+                                                var audio = document.getElementById("audio");
+                                                audio.play();
                                                 marker.bindPopup('<strong style="color:blue !important; " >' + message + '</strong>' + '<br>' +
                                                     '<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
                                                                     // "<b style='color:red !important;'>" + value1['sub_show_start_time'] + " - " + value1['sub_show_end_time'] + "</b>" ).openPopup();
@@ -865,6 +866,8 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                                            var message = "Event Today!";
                                                        }
                                 
+                                                       var audio = document.getElementById("audio");
+                                                        audio.play();
                                                     //    console.log(value1["sub_event_desc"]+ " " + value1['sub_show_start_time']+"-"+ value1['sub_show_end_time']);
                                                        marker.bindPopup('<strong style="color:blue !important; " >' + message + '</strong>' + '<br>' +
                                                            '<b>"' + value1["sub_event_name"] + '"</b>' + '<br>' +
