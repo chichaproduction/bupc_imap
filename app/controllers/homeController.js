@@ -765,7 +765,7 @@ $scope.title = APP_NAME + " Version " + APP_VERSION;
                                 // // console.log(value['id'] + " " + value['event_name']);
                                 value['is_active'] = "0";
                                 // $scope.PastEventsRemover(value['id']);
-                            }else{
+                            }else if(save_day > real_day){}else{
                                 // // console.log(value.sub_events);
                                if($scope.viewLiveEvents === 1){
                                     // if(marker){
