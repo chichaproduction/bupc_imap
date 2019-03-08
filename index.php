@@ -100,6 +100,9 @@
                 <a class="nav-link" ng-click="viewActiveEvents()" href="#">{{viewLiveEventsMenu}}</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="#" data-toggle="modal" data-target=".aboutmodal">About Us</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#"  data-toggle="modal" data-target="#accessModal"><h5>{{currentuser}}</h5></a>
               </li>
             </ul>
@@ -110,6 +113,86 @@
       <div class="container navtopfix full" style="height:100%; padding:0;">
       <div id="map"></div>
       </div>
+
+      <!-- ABOUT US MODAL -->
+      <div class="modal fade aboutmodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg-success textWhite">
+              <h5 class="modal-title" id="accessModalCenterTitle">The Developers</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">  
+              <div class="row">
+                  <div class="col-lg-4 mr-auto">
+                    <!-- <div><img id="map" src="img/About/A.jpeg" width="200px" height="200px" class="rounded"/></div> -->
+                    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                      <div class="card-header text-center">BSIT-4B-2019</div>
+                      <div class="card-body">
+                        <img src="img/About/A.jpeg" class="img-fluid rounded"  style="width:200px; height:200px;" alt="Responsive image">  
+                        <h5 class="card-title text-center">Rosemarie Salando</h5>
+                          <p class="card-text text-center">Contact me @<br>
+                          <b>#09125520769</b><br>
+                          Send me a mail @<br>
+                          <b><small>rosemariesalando06@gmail.com</small></b><br>
+                          </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 mr-auto">
+                    <!-- <div><img id="map" src="img/About/A.jpeg" width="200px" height="200px" class="rounded"/></div> -->
+                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                      <div class="card-header text-center">BSIT-4B-2019</div>
+                      <div class="card-body">
+                        <img src="img/About/C.JPG" class="img-fluid rounded"  style="width:200px; height:200px;" alt="Responsive image">  
+                        <h5 class="card-title text-center">Arianne Mirabueno</h5>
+                          <p class="card-text text-center">Contact me @<br>
+                          <b>#09453570253</b><br>
+                          Send me a mail @<br>
+                          <b><small>yhanmirabueno@gmail.com</small></b><br>
+                          </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 mr-auto">
+                    <!-- <div><img id="map" src="img/About/A.jpeg" width="200px" height="200px" class="rounded"/></div> -->
+                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                      <div class="card-header text-center">BSIT-4B-2019</div>
+                      <div class="card-body">
+                        <img src="img/About/B.jpeg" class="img-fluid rounded" style="width:200px; height:200px;" alt="Responsive image">  
+                        <h5 class="card-title text-center">Mao John Carl Samar</h5>
+                          <p class="card-text text-center">Contact me @<br>
+                          <b>#09183888360</b><br>
+                          Send me a mail @<br>
+                          <b><small>maojohncarl@gmail.com</small></b><br>
+                          </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+
+
+
+                  <!-- <div class="col-lg-4 mr-auto">
+                    <div><img id="map" src="img/About/B.jpeg" width="200px" height="200px" class="rounded"/></div>
+                  </div>
+                  <div class="col-lg-4 mr-auto">
+                    <div><img id="map" src="img/About/C.JPG" width="200px" height="200px" class="rounded"/></div>
+                  </div> -->
+              </div>
+
+          
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
 
      <!-- ACCESS MODAL -->
       <div class="modal fade searchbox" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
